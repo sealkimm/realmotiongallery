@@ -5,6 +5,11 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "strictNullChecks": true, // 엄격한 null 체크
+    "noImplicitReturns": true, // 함수 내 모든 경로에서 반드시 값을 반환하도록 강제
+    "noUnusedLocals": true, // 사용되지 않는 로컬 변수 경고
+    "noUnusedParameters": true, // 사용되지 않는 매개변수 경고
+    "forceConsistentCasingInFileNames": true, // 파일명 대소문자 구분 엄격히
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -13,6 +18,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": ".",
     "plugins": [
       {
         "name": "next"
