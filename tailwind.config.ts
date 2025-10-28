@@ -22,6 +22,8 @@ const config = {
         border: 'var(--border)',
         input: 'var(--input)',
         ring: 'var(--ring)',
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
         gray: {
           100: 'var(--gray-100)',
           200: 'var(--gray-200)',

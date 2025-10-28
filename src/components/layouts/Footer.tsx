@@ -1,8 +1,6 @@
-import { Button } from '@/components/ui/button';
-
 const Footer = () => {
   return (
-    <footer className="border-t border-white/10 bg-black py-8">
+    <footer className="mt-auto border-t border-white/10 bg-black py-8">
       <div className="container mx-auto px-4">
         <p className="text-gray-500">
           © {new Date().getFullYear()} Heewon Kim. All rights reserved. |

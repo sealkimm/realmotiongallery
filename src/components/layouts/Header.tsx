@@ -2,29 +2,30 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import clsx from 'clsx';
+import { categories } from '@/data/categories';
 import { LogIn, UserPlus2 } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
-interface Category {
-  id: string;
-  title: string;
-  description: string;
-  color: string;
-  textColor: string;
-  borderColor: string;
-}
+// interface Category {
+//   id: string;
+//   title: string;
+//   description: string;
+//   color: string;
+//   textColor: string;
+//   borderColor: string;
+// }
 
-interface HeaderProps {
-  categories: Category[];
-}
+// interface HeaderProps {
+//   categories: Category[];
+// }
 
-const Header = ({ categories }: HeaderProps) => {
+const Header = () => {
   const [activeCategory, setActiveCategory] = useState('gsap');
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/80 backdrop-blur-md">
+    <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/0 backdrop-blur-md">
       {/* container는 tailwind.config.ts에 설정되어 있는데 px, py 재설정함. 확인해보기 */}
       <div className="container relative mx-auto flex items-center justify-between px-4 py-4">
         {/* logo컴포로 분리 */}
@@ -37,12 +38,21 @@ const Header = ({ categories }: HeaderProps) => {
               <Button
                 key={category.id}
                 variant="ghost"
-                onClick={() => setActiveCategory(category.id)}
-                className={clsx(
+                onClick={() => {
+                  setActiveCategory(category.type);
+                  const categoryEl = document.getElementById(category.type);
+                  if (categoryEl) {
+                    categoryEl.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start',
+                    });
+                  }
+                }}
+                className={cn(
                   'transition-colors',
-                  'hover:text-white',
-                  activeCategory === category.id
-                    ? 'text-white'
+                  'hover:text-foreground',
+                  activeCategory === category.type
+                    ? 'text-foreground'
                     : 'text-gray-500',
                 )}
               >
@@ -68,5 +78,5 @@ const Header = ({ categories }: HeaderProps) => {
     </header>
   );
 };
-// fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10
+
 export default Header;
