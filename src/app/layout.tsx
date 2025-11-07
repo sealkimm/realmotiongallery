@@ -3,6 +3,9 @@ import { Inter } from 'next/font/google';
 
 import '@/styles/globals.css';
 
+import FloatingAddButton from '@/components/buttons/button/FloatingAddButton';
+import { Toaster } from '@/components/ui/sonner';
+
 import Footer from '../components/layouts/Footer';
 import Header from '../components/layouts/Header';
 import Theme from '../providers/theme-provider';
@@ -12,6 +15,7 @@ const inter = Inter({
   // variable: '--font-inter',
 });
 
+// 페이지별 다르게 하기
 export const metadata: Metadata = {
   title: 'Motion Gallery - 애니메이션 및 모션 효과 갤러리',
   description: 'GSAP, Three.js, CSS 및 기타 기술을 활용한 애니메이션 예제 모음',
@@ -26,10 +30,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <Theme>
+          <Toaster position="top-center" />
           {/* 이거 뭐 homewrapper 컨테이너로 따로 빼기 */}
           <div className="flex min-h-screen flex-col bg-background text-foreground">
             <Header />
-            {children}
+            <main>{children}</main>
+            <FloatingAddButton />
             <Footer />
           </div>
         </Theme>

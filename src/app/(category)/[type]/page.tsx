@@ -1,30 +1,60 @@
 import { notFound } from 'next/navigation';
-import { categories, gsapDummyData } from '@/data/categories';
+import { categories } from '@/data/categories';
+import { Search } from 'lucide-react';
 
-import ExampleCard from '@/components/common/Card';
+import { supabase } from '@/lib/supabaseClient';
+import ExampleCard from '@/components/card/ExampleCard';
+import { SearchInput } from '@/components/inputs/SearchInput';
+import PageHeader from '@/components/layouts/PageHeader';
+import { Badge } from '@/components/ui/badge';
 
-const CategoryPage = ({ params }: { params: { type: string } }) => {
+interface CategoryPageProps {
+  params: { type: string };
+}
+
+/// 데이터 타입스크립트 해야됨??!!
+const CategoryPage = async ({ params }: CategoryPageProps) => {
   const { type } = params;
 
-  const categoryData = categories.find(category => category.type === type);
-  const exampleListData = gsapDummyData.filter(item => item.type === type);
+  const category = categories.find(c => c.type === type);
 
-  if (!categoryData || !exampleListData) {
+  const { data: exampleListData, error } = await supabase
+    .from('testdata')
+    .select('*')
+    .eq('type', type);
+
+  if (!category || !exampleListData) {
     return notFound();
   }
+
   // type 별 데이터 뿌리기 api 사용
   return (
-    <div className="flex grid h-[100vh] w-[100vw]">
-      {/* Category: {categoryData.type} */}
-      <div style={{ fontSize: '7rem' }}>
-        {`category: ${categoryData.title}`}
-      </div>
-      <p>{categoryData.description}</p>
-
-      <div className="container mx-auto grid grid-cols-4 gap-4">
-        {exampleListData.map(item => (
-          <ExampleCard key={item.id} data={categoryData} item={item} />
-        ))}
+    <div className="pb-20 pt-24">
+      <div className="container mx-auto px-4">
+        <div className="mx-auto max-w-6xl">
+          <PageHeader
+            title={`${category.title} Animations`}
+            description={category.description}
+            badgeTitle={category.title}
+            badgeColor={category.color}
+            className="mb-8"
+          />
+          <div className="relative mb-10 max-w-md">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3">
+              <Search size={18} className="text-gray-400" />
+            </div>
+            <SearchInput
+              type="text"
+              placeholder={`${category.title} 애니메이션을 검색`}
+              className="pl-10"
+            />
+          </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {exampleListData.map(item => (
+              <ExampleCard key={item.id} category={category} data={item} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

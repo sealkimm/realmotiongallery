@@ -1,19 +1,42 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { categories, gsapDummyData } from '@/data/categories';
+import { notFound } from 'next/navigation';
+import { categories } from '@/data/categories';
+import { Example } from '@/types/example';
 import { ArrowUp, ChevronRight, Search, Sparkles } from 'lucide-react';
 
-import ExampleCard from '@/components/common/Card';
+import { supabase } from '@/lib/supabaseClient';
+import ExampleCard from '@/components/card/ExampleCard';
+import { SearchInput } from '@/components/inputs/SearchInput';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
-import { Input } from '../components/ui/custom/Input';
-
 // import { Input } from '@/components/ui/input';
 
-const MainPage = () => {
+const MainPage = async () => {
+  const { data: exampleListData, error } = await supabase
+    .from('testdata')
+    .select('*');
+
+  if (!exampleListData) {
+    return notFound();
+  }
+
+  const examplesByType = exampleListData.reduce<Record<string, Example[]>>(
+    (acc, item) => {
+      const type = item.type;
+      (acc[type] ||= []).push(item);
+      return acc;
+    },
+    {},
+  );
+
+  const filteredCategories = categories.filter(
+    category => examplesByType[category.type]?.length > 0,
+  );
+
   return (
-    <main className="flex-1 bg-black">
+    <div>
       {/* 메인 배너 영역 */}
       <div className="relative pb-20 pt-32">
         <div
@@ -29,15 +52,15 @@ const MainPage = () => {
               {/* <h1 className="mb-6 bg-gradient-to-r from-purple-400 via-pink-500 to-orange-500 bg-clip-text text-4xl font-bold text-transparent md:text-6xl"> */}
               Explore the Art of Motion
             </h1>
-            <p className="text-xl text-gray-400 md:text-2xl">
+            <p className="text-xl text-gray-300 md:text-2xl">
               Discover a collection of stunning animations and visual effects
               created using GSAP, Three.js, and CSS.
             </p>
           </div>
           {/* !!! 컬러 사용한것들 공통으로 할 수 있을지 보기,....버튼 컬러.... */}
           <div className="relative mx-auto max-w-2xl">
-            <div className="absolute -inset-0.5 rounded-xl bg-white/15 blur-md"></div>
-            <div className="hover:border-ring focus-within:border-ring relative flex items-center justify-between gap-2 rounded-xl border border-gray-900 bg-[#121318] p-1.5">
+            {/* <div className="absolute -inset-0.5 rounded-xl bg-white/30 blur-md"></div> */}
+            <div className="relative flex items-center justify-between gap-2 rounded-xl border border-gray-800 bg-gray-800/50 p-1.5 focus-within:border-ring hover:border-ring">
               <div className="rounded-lg bg-gradient-to-br from-violet-500/30 via-fuchsia-500/30 p-2">
                 <Sparkles size={20} className="text-purple-300" />
               </div>
@@ -47,8 +70,8 @@ const MainPage = () => {
                   size={16}
                 />
                 {/* 다양한 인풋 사이즈 필요하다면 커스텀에서 props s,m,l 사이즈 주는거 추가하기, 스타일링 준것도 공통으로 뺄거 빼기 */}
-                <Input
-                  className="rounded-lg border-0 bg-transparent pl-9 focus-visible:ring-0"
+                <SearchInput
+                  className="border-0 pl-9"
                   placeholder="어떤 모션을 찾으시나요?"
                 />
               </div>
@@ -61,9 +84,9 @@ const MainPage = () => {
       </div>
       {/* 메인 컨텐츠 영역*/}
       <div className="relative pb-40">
-        <div className="container mx-auto flex flex-col gap-24 border border-red-500 px-4">
-          {categories.map(category => (
-            <div id={category.type} key={category.id}>
+        <div className="container mx-auto flex flex-col gap-24 px-4">
+          {filteredCategories.map(category => (
+            <div key={category.id}>
               {/* 제목 */}
               <div className="mb-8 flex items-center justify-between">
                 <div className="flex flex-col gap-3">
@@ -72,7 +95,7 @@ const MainPage = () => {
                   >
                     {category.title}
                   </h2>
-                  <p className="text-xl text-gray-500">
+                  <p className="text-xl text-gray-400">
                     Smooth animations powered by GreenSock Animation Platform
                   </p>
                 </div>
@@ -89,15 +112,15 @@ const MainPage = () => {
               </div>
               {/* 카드 */}
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                {gsapDummyData.map(item => (
-                  <ExampleCard key={item.id} data={category} item={item} />
+                {examplesByType[category.type].map(item => (
+                  <ExampleCard key={item.id} category={category} data={item} />
                 ))}
               </div>
             </div>
           ))}
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 

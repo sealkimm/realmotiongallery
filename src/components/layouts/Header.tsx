@@ -36,17 +36,11 @@ const Header = () => {
           <nav className="mr-8 flex gap-8">
             {categories.map(category => (
               <Button
-                key={category.id}
+                key={category.type}
                 variant="ghost"
+                asChild
                 onClick={() => {
                   setActiveCategory(category.type);
-                  const categoryEl = document.getElementById(category.type);
-                  if (categoryEl) {
-                    categoryEl.scrollIntoView({
-                      behavior: 'smooth',
-                      block: 'start',
-                    });
-                  }
                 }}
                 className={cn(
                   'transition-colors',
@@ -56,12 +50,16 @@ const Header = () => {
                     : 'text-gray-500',
                 )}
               >
-                {category.title}
+                <Link href={`/${category.type}`}>{category.title}</Link>
               </Button>
             ))}
           </nav>
           {/* User Menu 로그인 후 화면 만들어야 함, 로그인 버튼 컴포 분리 */}
-          <Button asChild variant="outline">
+          <Button
+            asChild
+            variant="secondary"
+            className="bg-purple-500/20 text-white hover:bg-purple-500/30"
+          >
             <Link href="/" className="flex items-center gap-4">
               <LogIn />
               <span>Sign In</span>

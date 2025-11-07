@@ -1,4 +1,14 @@
-export const categories = [
+export interface Category {
+  id: number;
+  type: string;
+  title: string;
+  description: string;
+  color: string;
+  textColor: string;
+  borderColor: string;
+}
+
+export const categories: Category[] = [
   {
     id: 1,
     type: 'gsap',
@@ -27,224 +37,13 @@ export const categories = [
     textColor: 'text-green-500',
     borderColor: 'border-green-500',
   },
-];
-
-//  타입 설정 해야함!!!
-export const gsapDummyData = [
-  {
-    id: 1,
-    type: 'gsap',
-    title: 'GSAP 1',
-    description: 'GSAP 1 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 2,
-    type: 'gsap',
-    title: 'GSAP 2',
-    description: 'GSAP 2 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 3,
-    type: 'gsap',
-    title: 'GSAP 3',
-    description: 'GSAP 3 description',
-    image: '/img/dummy.jpg',
-  },
   {
     id: 4,
-    type: 'gsap',
-    title: 'GSAP 4',
-    description: 'GSAP 4 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 5,
-    type: 'gsap',
-    title: 'GSAP 5',
-    description: 'GSAP 5 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 6,
-    type: 'gsap',
-    title: 'GSAP 6',
-    description: 'GSAP 6 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 7,
-    type: 'gsap',
-    title: 'GSAP 7',
-    description: 'GSAP 7 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 8,
-    type: 'gsap',
-    title: 'GSAP 8',
-    description: 'GSAP 8 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 9,
-    type: 'gsap',
-    title: 'GSAP 9',
-    description: 'GSAP 9 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 10,
-    type: 'gsap',
-    title: 'GSAP 10',
-    description: 'GSAP 10 description',
-    image: '/img/dummy.jpg',
-  },
-];
-
-export const threejsDummyData = [
-  {
-    id: 1,
-    type: 'threejs',
-    title: 'Three.js 1',
-    description: 'Three.js 1 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 2,
-    type: 'threejs',
-    title: 'Three.js 1',
-    description: 'Three.js 1 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 3,
-    type: 'threejs',
-    title: 'Three.js 3',
-    description: 'Three.js 3 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 4,
-    type: 'threejs',
-    title: 'Three.js 4',
-    description: 'Three.js 4 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 5,
-    type: 'threejs',
-    title: 'Three.js 5',
-    description: 'Three.js 5 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 6,
-    type: 'threejs',
-    title: 'Three.js 6',
-    description: 'Three.js 6 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 7,
-    type: 'threejs',
-    title: 'Three.js 7',
-    description: 'Three.js 7 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 8,
-    type: 'threejs',
-    title: 'Three.js 8',
-    description: 'Three.js 8 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 9,
-    type: 'threejs',
-    title: 'Three.js 9',
-    description: 'Three.js 9 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 10,
-    type: 'threejs',
-    title: 'Three.js 10',
-    description: 'Three.js 10 description',
-    image: '/img/dummy.jpg',
-  },
-];
-
-export const cssDummyData = [
-  {
-    id: 1,
-    type: 'css',
-    title: 'CSS 1',
-    description: 'CSS 1 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 2,
-    type: 'css',
-    title: 'CSS 2',
-    description: 'CSS 2 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 3,
-    type: 'css',
-    title: 'CSS 3',
-    description: 'CSS 3 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 4,
-    type: 'css',
-    title: 'CSS 4',
-    description: 'CSS 4 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 5,
-    type: 'css',
-    title: 'CSS 5',
-    description: 'CSS 5 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 6,
-    type: 'css',
-    title: 'CSS 6',
-    description: 'CSS 6 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 7,
-    type: 'css',
-    title: 'CSS 7',
-    description: 'CSS 7 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 8,
-    type: 'css',
-    title: 'CSS 8',
-    description: 'CSS 8 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 9,
-    type: 'css',
-    title: 'CSS 9',
-    description: 'CSS 9 description',
-    image: '/img/dummy.jpg',
-  },
-  {
-    id: 10,
-    type: 'css',
-    title: 'CSS 10',
-    description: 'CSS 10 description',
-    image: '/img/dummy.jpg',
+    type: 'other',
+    title: 'Other',
+    description: 'Other categories',
+    color: 'from-gray-500 to-gray-500',
+    textColor: 'text-gray-500',
+    borderColor: 'border-gray-500',
   },
 ];

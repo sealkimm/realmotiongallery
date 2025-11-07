@@ -33,25 +33,27 @@
   --input: hsl(214.3 31.8% 91.4%);
   --ring: hsl(262.1 83.3% 57.8%);
   --radius: 0.5rem; */
+  --radius: 0.5rem;
 }
 
 .dark {
-  --gray-100: hsl(210 5% 98%);
-  --gray-200: hsl(210 5% 95%);
-  --gray-300: hsl(210 5% 90%);
-  --gray-400: hsl(210 7% 80%);
-  --gray-500: hsl(210 10% 61%);
-  --gray-600: hsl(210 11% 44%);
-  --gray-700: hsl(210 12% 29%);
-  --gray-800: hsl(210 16% 23%);
-  --gray-900: hsl(210 16% 15%);
-  --background: hsl(222.2 84% 4.9%);
+  /* --gray-100: hsl(210, 12%, 95%);
+  --gray-200: hsl(210, 10%, 88%);
+  --gray-300: hsl(210, 8%, 78%);
+  --gray-400: hsl(210, 7%, 65%);
+  --gray-500: hsl(211, 7%, 52%);
+  --gray-600: hsl(212, 8%, 42%);
+  --gray-700: hsl(214, 10%, 32%);
+  --gray-800: hsl(218, 17%, 20%);
+  --gray-900: hsl(222, 36%, 11%); */
+
+  /* --background: hsl(0, 0%, 0%);
   --foreground: hsl(210 40% 98%);
   --card: hsl(222.2 84% 4.9%);
   --card-foreground: hsl(210 40% 98%);
   --popover: hsl(222.2 84% 4.9%);
   --popover-foreground: hsl(210 40% 98%);
-  --primary: oklch(62.7% 0.265 303.9);
+  --primary: hsl(273, 100%, 64%);
   --primary-foreground: hsl(210 40% 98%);
   --secondary: hsl(217.2 32.6% 17.5%);
   --secondary-foreground: hsl(210 40% 98%);
@@ -62,10 +64,29 @@
   --destructive: hsl(0 62.8% 30.6%);
   --destructive-foreground: hsl(210 40% 98%);
   --border: hsl(217.2 32.6% 17.5%);
-  /* 사용한 인풋 링 보고 컬러 바꾸기 */
-  --input: hsl(210 11% 44%);
-  --ring: hsl(210 16% 23%);
-  --radius: 0.5rem;
+  --input: hsl(219, 31%, 17%);
+  --ring: hsl(218, 17%, 25%);
+  --radius: 0.5rem; */
+
+  --background: 0, 0%, 0%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 262.1 83.3% 57.8%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 219, 31%, 17%;
+  --ring: 218, 17%, 25%;
 }
 
 @layer utilities {
@@ -80,4 +101,20 @@
 body {
   /*color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif; */
+}
+
+.md-viewer-container .wmde-markdown iframe {
+  min-height: 500px;
+}
+
+.md-viewer-container .wmde-markdown {
+  background-color: rgb(20, 23, 34);
+  border-radius: 0.7rem;
+  padding: 1.5rem;
+}
+.md-viewer-container .wmde-markdown h1 {
+  border: 0;
+}
+.md-editor-container .w-md-editor {
+  min-height: 300px;
 }
