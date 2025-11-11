@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { categories } from '@/data/categories';
 import { Example } from '@/types/example';
@@ -113,8 +113,6 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
   };
 
   const onSubmit = async (data: FormValues) => {
-    console.log('테스트테스트');
-
     const thumbnailUrl = extractThumbnailUrl(data.content);
 
     const formData = {
@@ -142,6 +140,12 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
       toast.error('저장 실패');
     }
   };
+
+  useEffect(() => {
+    if (exampleData) {
+      setTags(exampleData.tags);
+    }
+  }, [exampleData]);
 
   return (
     <Form {...form}>

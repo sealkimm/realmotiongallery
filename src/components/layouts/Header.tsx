@@ -60,13 +60,13 @@ const Header = () => {
             variant="secondary"
             className="bg-purple-500/20 text-white hover:bg-purple-500/30"
           >
-            <Link href="/" className="flex items-center gap-4">
+            <Link href="/signin" className="flex items-center gap-4">
               <LogIn />
               <span>Sign In</span>
             </Link>
           </Button>
           <Button asChild className="gradient-background ml-4">
-            <Link href="/" className="flex items-center gap-4">
+            <Link href="/signup" className="flex items-center gap-4">
               <UserPlus2 />
               <span>Sign Up</span>
             </Link>

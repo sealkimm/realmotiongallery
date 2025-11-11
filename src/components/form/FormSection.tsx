@@ -9,7 +9,7 @@ const FormSection = ({ children, className }: FormSectionProps) => {
   return (
     <div
       className={cn(
-        'rounded-xl border border-gray-800 bg-gray-700/40 p-6',
+        'rounded-xl border border-white/10 bg-gray-900/50 p-6 backdrop-blur-md',
         className,
       )}
     >
