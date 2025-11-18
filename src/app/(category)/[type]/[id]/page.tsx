@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { categories } from '@/data/categories';
 
 import { supabase } from '@/lib/supabaseClient';
-import EditDeleteButtonGroup from '@/components/buttons/buttonGroups/EditDeleteButtonGroup';
+import EditDeleteButtonGroups from '@/components/buttons/buttonGroups/EditDeleteButtonGroups';
 import ExampleCard from '@/components/card/ExampleCard';
 import MarkdownViewer from '@/components/editor/MarkdownViewer';
 import PageHeader from '@/components/layouts/PageHeader';
@@ -23,7 +23,7 @@ const ExamplePage = async ({ params }: Props) => {
   const category = categories.find(c => c.type === type);
 
   const { data: exampleData, error } = await supabase
-    .from('testdata')
+    .from('examples')
     .select('*')
     .eq('id', id)
     .single();
@@ -66,7 +66,7 @@ const ExamplePage = async ({ params }: Props) => {
             badgeColor={category.color}
             tags={exampleData.tags}
           />
-          <EditDeleteButtonGroup exampleId={exampleData.id} />
+          <EditDeleteButtonGroups exampleId={exampleData.id} />
           <div className="mb-10">
             <MarkdownViewer content={exampleData.content} />
           </div>

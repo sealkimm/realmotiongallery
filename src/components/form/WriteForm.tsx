@@ -125,8 +125,8 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
     };
 
     const query = isEditMode
-      ? supabase.from('testdata').update(formData).eq('id', exampleData.id)
-      : supabase.from('testdata').insert(formData);
+      ? supabase.from('examples').update(formData).eq('id', exampleData.id)
+      : supabase.from('examples').insert(formData);
 
     try {
       const { error } = await query;

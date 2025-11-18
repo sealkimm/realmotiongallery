@@ -2,11 +2,30 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/auth-context';
 import { categories } from '@/data/categories';
-import { LogIn, UserPlus2 } from 'lucide-react';
+import {
+  ChevronDown,
+  LogIn,
+  LogOut,
+  Plus,
+  User,
+  UserPlus2,
+} from 'lucide-react';
+import { toast } from 'sonner';
 
+import { supabase } from '@/lib/supabaseClient';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 
 // interface Category {
 //   id: string;
@@ -22,7 +41,17 @@ import { Button } from '@/components/ui/button';
 // }
 
 const Header = () => {
+  const { user } = useAuth();
+  const router = useRouter();
   const [activeCategory, setActiveCategory] = useState('gsap');
+
+  const onClickLogout = () => {
+    // 트라이문 해야할까...
+    supabase.auth.signOut().then(() => {
+      toast.success('로그아웃이 완료되었습니다.');
+      router.push('/');
+    });
+  };
 
   return (
     <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/0 backdrop-blur-md">
@@ -54,23 +83,72 @@ const Header = () => {
               </Button>
             ))}
           </nav>
-          {/* User Menu 로그인 후 화면 만들어야 함, 로그인 버튼 컴포 분리 */}
-          <Button
-            asChild
-            variant="secondary"
-            className="bg-purple-500/20 text-white hover:bg-purple-500/30"
-          >
-            <Link href="/signin" className="flex items-center gap-4">
-              <LogIn />
-              <span>Sign In</span>
-            </Link>
-          </Button>
-          <Button asChild className="gradient-background ml-4">
-            <Link href="/signup" className="flex items-center gap-4">
-              <UserPlus2 />
-              <span>Sign Up</span>
-            </Link>
-          </Button>
+
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="flex items-center gap-4">
+                  <Avatar className="h-8 w-8 border-2 border-purple-500">
+                    <AvatarImage
+                      src={user.user_metadata.avatar_url}
+                      alt={user.user_metadata.name}
+                    />
+                    <AvatarFallback>
+                      <User size={16} />
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="hidden text-sm md:block">
+                    {user.user_metadata.nickname}
+                  </span>
+                  <ChevronDown size={16} />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48 border-gray-800 bg-gray-900">
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/"
+                    className="flex cursor-pointer items-center gap-4"
+                  >
+                    <User size={16} />
+                    프로필
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={onClickLogout}
+                  className="flex cursor-pointer items-center gap-4"
+                >
+                  <LogOut size={16} />
+                  로그아웃
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button
+              asChild
+              variant="secondary"
+              className="bg-purple-500/20 text-white hover:bg-purple-500/30"
+            >
+              <Link href="/auth/login" className="flex items-center gap-4">
+                <LogIn />
+                <span>로그인</span>
+              </Link>
+            </Button>
+          )}
+          {user ? (
+            <Button asChild className="gradient-background ml-4">
+              <Link href="/write" className="flex items-center gap-4">
+                <Plus size={16} />
+                <span>글작성</span>
+              </Link>
+            </Button>
+          ) : (
+            <Button asChild className="gradient-background ml-4">
+              <Link href="/auth/signup" className="flex items-center gap-4">
+                <UserPlus2 />
+                <span>회원가입</span>
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>

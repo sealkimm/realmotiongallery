@@ -14,7 +14,7 @@ const WritePage = async ({ searchParams }: WritePageProps) => {
 
   if (exampleId) {
     const { data, error } = await supabase
-      .from('testdata')
+      .from('examples')
       .select('*')
       .eq('id', exampleId)
       .single();

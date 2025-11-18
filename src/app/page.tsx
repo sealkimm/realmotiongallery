@@ -15,7 +15,7 @@ import { Card, CardContent } from '@/components/ui/card';
 
 const MainPage = async () => {
   const { data: exampleListData, error } = await supabase
-    .from('testdata')
+    .from('examples')
     .select('*');
 
   if (!exampleListData) {

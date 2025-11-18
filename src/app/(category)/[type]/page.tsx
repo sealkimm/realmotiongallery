@@ -19,7 +19,7 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
   const category = categories.find(c => c.type === type);
 
   const { data: exampleListData, error } = await supabase
-    .from('testdata')
+    .from('examples')
     .select('*')
     .eq('type', type);
 

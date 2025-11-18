@@ -28,7 +28,7 @@ const EditDeleteButtonGroup = ({ exampleId }: EditDeleteButtonGroupProps) => {
 
   const handleDeleteExample = async id => {
     try {
-      const { error } = await supabase.from('testdata').delete().eq('id', id);
+      const { error } = await supabase.from('examples').delete().eq('id', id);
 
       if (error) {
         throw new Error(error.message);

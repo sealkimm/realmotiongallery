@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 
 import '@/styles/globals.css';
 
+import { AuthProvider } from '@/context/auth-context';
+
 import FloatingAddButton from '@/components/buttons/button/FloatingAddButton';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -29,16 +31,18 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <Theme>
-          <Toaster position="top-center" />
-          {/* 이거 뭐 homewrapper 컨테이너로 따로 빼기 */}
-          <div className="flex min-h-screen flex-col bg-background text-foreground">
-            <Header />
-            <main>{children}</main>
-            <FloatingAddButton />
-            <Footer />
-          </div>
-        </Theme>
+        <AuthProvider>
+          <Theme>
+            <Toaster position="top-center" />
+            {/* 이거 뭐 homewrapper 컨테이너로 따로 빼기 */}
+            <div className="flex min-h-screen flex-col bg-background text-foreground">
+              <Header />
+              <main>{children}</main>
+              <FloatingAddButton />
+              <Footer />
+            </div>
+          </Theme>
+        </AuthProvider>
       </body>
     </html>
   );
