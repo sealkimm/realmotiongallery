@@ -7,6 +7,7 @@ import { useAuth } from '@/context/auth-context';
 import { categories } from '@/data/categories';
 import {
   ChevronDown,
+  Loader2,
   LogIn,
   LogOut,
   Plus,
@@ -41,9 +42,12 @@ import {
 // }
 
 const Header = () => {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
   const [activeCategory, setActiveCategory] = useState('gsap');
+
+  // 깔끔하게 다시 만들기
+  if (isLoading) return null;
 
   const onClickLogout = () => {
     // 트라이문 해야할까...
@@ -89,16 +93,13 @@ const Header = () => {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center gap-4">
                   <Avatar className="h-8 w-8 border-2 border-purple-500">
-                    <AvatarImage
-                      src={user.user_metadata.avatar_url}
-                      alt={user.user_metadata.name}
-                    />
+                    <AvatarImage src={user.avatar_url} alt={user.nickname} />
                     <AvatarFallback>
                       <User size={16} />
                     </AvatarFallback>
                   </Avatar>
                   <span className="hidden text-sm md:block">
-                    {user.user_metadata.nickname}
+                    {user.nickname}
                   </span>
                   <ChevronDown size={16} />
                 </Button>

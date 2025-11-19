@@ -9,6 +9,7 @@ import { Loader2, Shuffle } from 'lucide-react';
 import { toast } from 'sonner';
 import z from 'zod';
 
+import { createRandomNickname } from '@/lib/nickname';
 import { supabase } from '@/lib/supabaseClient';
 import { upsertUserInfo } from '@/lib/user';
 import useSocialLogin from '@/hooks/useSocialLogin';
@@ -31,10 +32,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
-import { ADJ_LIST, NOUN_LIST } from './constants';
-
-type FormValues = z.infer<typeof formSchema>;
-
 const passwordSchema = z
   .string()
   .min(6, { message: '비밀번호는 6자 이상이어야 합니다.' })
@@ -44,7 +41,10 @@ const passwordSchema = z
 
 const formSchema = z
   .object({
-    nickname: z.string().min(1, { message: '닉네임을 입력해주세요.' }),
+    nickname: z
+      .string()
+      .min(1, { message: '닉네임을 입력해주세요.' })
+      .regex(/^\S+$/, { message: '닉네임에 공백을 포함할 수 없습니다.' }),
     email: z
       .string()
       .email({ message: '유효하지 않은 이메일 주소입니다.' })
@@ -60,12 +60,14 @@ const formSchema = z
     path: ['confirmPassword'],
   });
 
+type FormValues = z.infer<typeof formSchema>;
+
 const SignupPage = () => {
   const router = useRouter();
   const { onClickSocialLogin } = useSocialLogin();
   const [isEmailVerificationSent, setIsEmailVerificationSent] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
-  const [isCodeSending, setIsCodingSending] = useState(false);
+  const [isCodeSending, setIsCodeSending] = useState(false);
 
   //바깥에 적어도 돠나??
   const form = useForm<FormValues>({
@@ -117,7 +119,7 @@ const SignupPage = () => {
     }
 
     try {
-      setIsCodingSending(true);
+      setIsCodeSending(true);
 
       const response = await fetch('/api/send-verification-email', {
         method: 'POST',
@@ -134,7 +136,7 @@ const SignupPage = () => {
     } catch (error) {
       toast.error('❌ 이메일 전송에 실패했습니다.');
     } finally {
-      setIsCodingSending(false);
+      setIsCodeSending(false);
     }
   };
 
@@ -191,36 +193,17 @@ const SignupPage = () => {
 
     if (authUser) {
       await upsertUserInfo(authUser);
+      await supabase.auth.refreshSession();
     }
 
     toast.success('✅ 회원가입이 완료되었습니다.');
-    // router.push('/');
+    router.push('/');
   };
 
-  const getRandomItem = arr => {
-    const randomIndex = Math.floor(Math.random() * arr.length);
-
-    return arr[randomIndex];
-  };
-
-  const onClickRandomNickname = async () => {
-    const MAX_TRY = 10;
-
-    for (let i = 0; i < MAX_TRY; i++) {
-      const adj = getRandomItem(ADJ_LIST);
-      const noun = getRandomItem(NOUN_LIST);
-      const num = Math.floor(Math.random() * 100) + 1;
-      const randomNickname = `${adj}${noun}${num}`;
-
-      const isDuplicatedNickname = await checkDuplication(
-        'nickname',
-        randomNickname,
-      );
-
-      if (!isDuplicatedNickname) {
-        form.setValue('nickname', randomNickname);
-        return;
-      }
+  const onClickRandomBtn = async () => {
+    const randomNickname = await createRandomNickname();
+    if (randomNickname) {
+      form.setValue('nickname', randomNickname);
     }
   };
 
@@ -257,7 +240,7 @@ const SignupPage = () => {
                             <Button
                               type="button"
                               variant="secondary"
-                              onClick={onClickRandomNickname}
+                              onClick={onClickRandomBtn}
                             >
                               <Shuffle />
                             </Button>

@@ -4,43 +4,37 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
+import { createRandomNickname } from '@/lib/nickname';
 import { supabase } from '@/lib/supabaseClient';
 import { upsertUserInfo } from '@/lib/user';
 
+//소셜 로그인 전용 콜백페이지!
 const AuthCallbackPage = () => {
   const router = useRouter();
-  console.log('test2');
-  // useEffect(() => {
-  //   const handleAuth = async () => {
-  //     const {
-  //       data: { session },
-  //       error,
-  //     } = await supabase.auth.getSession();
 
-  //     // if (data.session) {
-  //     //   router.replace('/'); // 메인으로
-  //     // } else {
-  //     //   router.replace('/auth/login'); // 실패 시 로그인 페이지로
-  //     // }
+  useEffect(() => {
+    const handleAuth = async () => {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
 
-  //     if (error || !session) {
-  //       toast.error('세션 정보를 가져오지 못했습니다.');
-  //       router.replace('/auth/login');
-  //       return;
-  //     }
+      if (error || !session) {
+        toast.error('세션 정보를 가져오지 못했습니다.');
+        return;
+      }
 
-  //     try {
-  //       await upsertUserInfo(session?.user);
-  //     } catch (error) {
-  //       toast.error('사용자 정보를 저장하지 못했습니다.');
-  //       router.replace('/auth/login');
-  //     } finally {
-  //       router.replace('/');
-  //     }
-  //   };
+      const user = session.user;
+      const nickname = await createRandomNickname();
+      // const nickname = (await createRandomNickname()) ?? user.id.slice(0, 6);
 
-  //   handleAuth();
-  // }, [router]);
+      await upsertUserInfo(user, nickname);
+      await supabase.auth.refreshSession();
+      router.push('/');
+    };
+
+    handleAuth();
+  }, [router]);
 };
 
 export default AuthCallbackPage;

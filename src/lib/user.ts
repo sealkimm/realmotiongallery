@@ -4,19 +4,27 @@ import { User } from '@supabase/supabase-js';
 
 import { supabase } from './supabaseClient';
 
-export const upsertUserInfo = async (user: User) => {
+export const upsertUserInfo = async (user: User, nickname?: string) => {
   const { id, email, user_metadata } = user;
+  const finalNickname = nickname || user_metadata.nickname;
+  const finalAvatarUrl = user_metadata.avatar_url || '';
+  const finalCreatedAt = user_metadata.created_at || new Date();
 
-  const { error } = await supabase.from('users').upsert(
-    {
-      id,
-      email,
-      nickname: user_metadata.nickname || 'test',
-    },
-    { onConflict: 'id' },
-  );
+  const { data: existingUser } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', id)
+    .maybeSingle();
+  if (existingUser) return existingUser;
 
-  if (error) {
-    throw error;
-  }
+  const { data, error } = await supabase.from('users').insert({
+    id,
+    email,
+    nickname: finalNickname,
+    created_at: finalCreatedAt,
+    avatar_url: finalAvatarUrl,
+  });
+  if (error) throw error;
+
+  return data;
 };
