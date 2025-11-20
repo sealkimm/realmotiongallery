@@ -6,6 +6,7 @@ import { categories } from '@/data/categories';
 import { Example } from '@/types/example';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Tag as TagIcon, X } from 'lucide-react';
+import { motion } from 'motion/react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -50,6 +51,14 @@ interface WriteFormProps {
 }
 
 ///여기는 폼 컴포넌트인데 너무 많은걸 하고 있음
+const defaultValues = {
+  type: '',
+  title: '',
+  description: '',
+  content: '',
+  tags: [],
+  thumbnail: '',
+};
 
 const WriteForm = ({ exampleData }: WriteFormProps) => {
   const [tags, setTags] = useState([]);
@@ -57,13 +66,7 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: exampleData || {
-      type: '',
-      title: '',
-      description: '',
-      content: '',
-      tags: [],
-    },
+    defaultValues: exampleData || defaultValues,
   });
 
   const preventEnterKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -144,124 +147,141 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
   useEffect(() => {
     if (exampleData) {
       setTags(exampleData.tags);
+    } else {
+      form.reset(defaultValues);
+      setTags([]);
     }
   }, [exampleData]);
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        {/* 텍스트 */}
-        <div className="flex flex-col gap-6">
-          <FormSection className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <div className="md:col-span-2">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-foreground">제목</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Scroll Animations..."
-                        onKeyDown={preventEnterKey}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="md:col-span-1">
-              <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-foreground">카테고리</FormLabel>
-                    <Select value={field.value} onValueChange={field.onChange}>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          {/* 텍스트 */}
+          <div className="flex flex-col gap-6">
+            <FormSection className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              <div className="md:col-span-2">
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-foreground">제목</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="카테고리 선택" />
-                        </SelectTrigger>
+                        <Input
+                          {...field}
+                          placeholder="Scroll Animations..."
+                          onKeyDown={preventEnterKey}
+                        />
                       </FormControl>
-                      <SelectContent>
-                        {categories.map(category => (
-                          <SelectItem key={category.type} value={category.type}>
-                            {category.type}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="md:col-span-3">
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="md:col-span-1">
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-foreground">
+                        카테고리
+                      </FormLabel>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="카테고리 선택" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {categories.map(category => (
+                            <SelectItem
+                              key={category.type}
+                              value={category.type}
+                            >
+                              {category.type}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="md:col-span-3">
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-foreground">설명</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          placeholder=" 스크롤 애니메이션을 쉽게 만들 수 있는 방법을 소개합니다."
+                          className="resize-none"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </FormSection>
+            <FormSection>
               <FormField
                 control={form.control}
-                name="description"
+                name="content"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-foreground">설명</FormLabel>
+                    <FormLabel className="text-foreground">내용</FormLabel>
                     <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder=" 스크롤 애니메이션을 쉽게 만들 수 있는 방법을 소개합니다."
-                        className="resize-none"
+                      <MarkdownEditor
+                        value={field.value}
+                        onChange={field.onChange}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
-          </FormSection>
-          <FormSection>
-            <FormField
-              control={form.control}
-              name="content"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-foreground">내용</FormLabel>
-                  <FormControl>
-                    <MarkdownEditor
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </FormSection>
-          <FormSection>
-            <div>
-              <div className="mb-2 flex items-center gap-2 text-lg">
-                <TagIcon size={18} className="text-primary" />
-                태그
-              </div>
-              <Input
-                placeholder="태그를 엔터로 구분하여 입력하세요"
-                onKeyDown={e => handleKeyDown(e)}
-              />
-            </div>
-            <div className="mt-3 flex gap-2">
-              {tags.map((tag, index) => (
-                <Tag
-                  key={index}
-                  label={tag}
-                  removable
-                  onClickRemove={() => handleDeleteTag(tag)}
+            </FormSection>
+            <FormSection>
+              <div>
+                <div className="mb-2 flex items-center gap-2 text-lg">
+                  <TagIcon size={18} className="text-primary" />
+                  태그
+                </div>
+                <Input
+                  placeholder="태그를 엔터로 구분하여 입력하세요"
+                  onKeyDown={e => handleKeyDown(e)}
                 />
-              ))}
-            </div>
-          </FormSection>
-        </div>
-        <FormBtnGroup isEditMode={isEditMode} />
-      </form>
-    </Form>
+              </div>
+              <div className="mt-3 flex gap-2">
+                {tags.map((tag, index) => (
+                  <Tag
+                    key={index}
+                    label={tag}
+                    removable
+                    onClickRemove={() => handleDeleteTag(tag)}
+                  />
+                ))}
+              </div>
+            </FormSection>
+          </div>
+          <FormBtnGroup isEditMode={isEditMode} />
+        </form>
+      </Form>
+    </motion.div>
   );
 };
 

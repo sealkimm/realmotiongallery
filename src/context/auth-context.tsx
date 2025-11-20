@@ -67,7 +67,6 @@ export const AuthProvider = ({ children }) => {
     const { data } = subscribeAuth();
     return () => data.subscription.unsubscribe();
   }, []);
-  console.log('✳️user', user);
 
   return (
     <AuthContext.Provider value={{ user, isLoading }}>

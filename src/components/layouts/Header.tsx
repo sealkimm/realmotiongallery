@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
 import { categories } from '@/data/categories';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
 import {
   ChevronDown,
   Loader2,
@@ -28,6 +30,8 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 
+gsap.registerPlugin(useGSAP);
+
 // interface Category {
 //   id: string;
 //   title: string;
@@ -42,12 +46,12 @@ import {
 // }
 
 const Header = () => {
-  const { user, isLoading } = useAuth();
   const router = useRouter();
+  const headerRef = useRef(null);
+  const { user, isLoading } = useAuth();
   const [activeCategory, setActiveCategory] = useState('gsap');
 
-  // 깔끔하게 다시 만들기
-  if (isLoading) return null;
+  // 로딩부분 깔끔하게 다시 만들기
 
   const onClickLogout = () => {
     // 트라이문 해야할까...
@@ -57,8 +61,28 @@ const Header = () => {
     });
   };
 
+  useGSAP(
+    () => {
+      if (!headerRef.current) return;
+
+      gsap.from(headerRef.current, {
+        y: -100,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out',
+      });
+    },
+    { scope: headerRef },
+  );
+
+  // ✳️✳️✳️✳️ 로그인할때 에러때문에 넣은 로딩인데 이거때문에 모션 안되서 잠시 지움 -> 다시 확인 꼭 하기!!
+  // if (isLoading) return null;
+
   return (
-    <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/0 backdrop-blur-md">
+    <header
+      ref={headerRef}
+      className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/0 backdrop-blur-md"
+    >
       {/* container는 tailwind.config.ts에 설정되어 있는데 px, py 재설정함. 확인해보기 */}
       <div className="container relative mx-auto flex items-center justify-between px-4 py-4">
         {/* logo컴포로 분리 */}

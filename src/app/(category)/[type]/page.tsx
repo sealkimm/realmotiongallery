@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import CardListAnimator from '@/animations/CardListAnimator';
 import { categories } from '@/data/categories';
 import { Search } from 'lucide-react';
 
@@ -49,11 +50,13 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
               className="pl-10"
             />
           </div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {exampleListData.map(item => (
-              <ExampleCard key={item.id} category={category} data={item} />
-            ))}
-          </div>
+          <CardListAnimator direction="up">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+              {exampleListData.map(item => (
+                <ExampleCard key={item.id} category={category} data={item} />
+              ))}
+            </div>
+          </CardListAnimator>
         </div>
       </div>
     </div>

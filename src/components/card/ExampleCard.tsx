@@ -2,12 +2,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Category } from '@/data/categories';
 import { Example } from '@/types/example';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Bookmark, Heart, MessageCircle } from 'lucide-react';
+import * as motion from 'motion/react-client';
 
 import { cn } from '@/lib/utils';
 
 import { Card, CardContent } from '../ui/card';
 
+// 코드 너무 지저분...정리 필요
 interface ExampleCardProps {
   category: Category;
   data: Example;
@@ -20,8 +22,10 @@ const ExampleCard = ({
   isHorizontal = false,
 }: ExampleCardProps) => {
   return (
-    <Link href={`/${category.type}/${data.id}`}>
-      <div
+    <Link href={`/${category.type}/${data.id}`} className="example-card">
+      <motion.div
+        whileHover={{ y: isHorizontal ? -5 : -10, scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
         className={`bg-gradient-to-br ${category.color} h-full rounded-xl p-[2px]`}
       >
         <Card
@@ -69,16 +73,42 @@ const ExampleCard = ({
                 {isHorizontal && <ArrowRight size={14} />}
               </p>
             </div>
-            {!isHorizontal && (
-              <div className={`flex justify-end ${category.textColor} mt-3`}>
-                <div>
-                  <ArrowRight size={20} />
-                </div>
+            <div className="mt-3 flex items-center justify-between">
+              {/* 컴포분리 */}
+              <div className="flex items-center justify-end gap-3">
+                {/*  중복.. 뭔가 똑똑한 방법이 있을까 */}
+                <button
+                  type="button"
+                  className="flex items-center gap-1 text-gray-400 transition-colors hover:text-red-500"
+                >
+                  <Heart size={16} />
+                  <span className="text-sm">10</span>
+                </button>
+                <button
+                  type="button"
+                  className="flex items-center gap-1 text-gray-400 transition-colors hover:text-blue-500"
+                >
+                  <MessageCircle size={16} />
+                  <span className="text-sm">24</span>
+                </button>
+                <button
+                  type="button"
+                  className="flex items-center gap-1 text-gray-400 transition-colors hover:text-yellow-500"
+                >
+                  <Bookmark size={16} />
+                </button>
               </div>
-            )}
+              {!isHorizontal && (
+                <div className={category.textColor}>
+                  <div>
+                    <ArrowRight size={20} />
+                  </div>
+                </div>
+              )}
+            </div>
           </CardContent>
         </Card>
-      </div>
+      </motion.div>
     </Link>
   );
 };

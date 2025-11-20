@@ -30,7 +30,8 @@ const WritePage = async ({ searchParams }: WritePageProps) => {
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-5xl">
           <PageHeader
-            title="새 예제 등록하기"
+            title={exampleData ? '예제 수정하기' : '새 예제 등록하기'}
+            // title="새 예제 등록하기"
             description="멋진 애니메이션 예제를 공유하고 커뮤니티에 기여해보세요."
           />
           <WriteForm exampleData={exampleData} />

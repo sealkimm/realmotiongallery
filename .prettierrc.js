@@ -27,5 +27,5 @@ module.exports = {
     '^[./]',
   ],
   importOrderSeparation: true,
-  importOrderSortSpecifiers: true,
+  // importOrderSortSpecifiers: true,
 };
