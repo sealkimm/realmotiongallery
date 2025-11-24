@@ -7,5 +7,8 @@ export interface Example {
   content: string;
   created_at: string;
   thumbnail: string;
-  tags: string[];
+  tags?: string[];
+  like_count: number;
+  isLiked?: boolean;
+  isBookmarked?: boolean;
 }

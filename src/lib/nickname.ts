@@ -1,6 +1,6 @@
 import { ADJ_LIST, NOUN_LIST } from '@/constants/constants';
 
-import { supabase } from './supabaseClient';
+import { supabase } from './supabase/client';
 
 //user.ts도 그렇고 이 파일 여기 두는게 맞을까??
 const getRandomItem = arr => {

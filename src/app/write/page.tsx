@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabaseClient';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
 import WriteForm from '@/components/form/WriteForm';
 import PageHeader from '@/components/layouts/PageHeader';
 
@@ -7,9 +7,11 @@ interface WritePageProps {
     id: string;
   };
 }
-
+// 리팩토링
 const WritePage = async ({ searchParams }: WritePageProps) => {
+  const supabase = createSupabaseServerClient();
   const exampleId = searchParams.id;
+
   let exampleData = null;
 
   if (exampleId) {

@@ -1,8 +1,8 @@
 // 이 파일 위치 여기가 맞을까
-
+// 파일 분리해야하는거 같음
 import { User } from '@supabase/supabase-js';
 
-import { supabase } from './supabaseClient';
+import { supabase } from './supabase/client';
 
 export const upsertUserInfo = async (user: User, nickname?: string) => {
   const { id, email, user_metadata } = user;

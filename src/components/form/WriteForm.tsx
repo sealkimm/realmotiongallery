@@ -10,7 +10,7 @@ import { motion } from 'motion/react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { supabase } from '@/lib/supabaseClient';
+import { supabase } from '@/lib/supabase/client';
 import MarkdownEditor from '@/components/editor/MarkdownEditor';
 import FormBtnGroup from '@/components/form/FormBtnGroup';
 import FormSection from '@/components/form/FormSection';

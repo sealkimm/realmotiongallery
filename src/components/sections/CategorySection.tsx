@@ -66,7 +66,7 @@ const CategorySection = ({ category, exampleList }: CategorySectionProps) => {
       <CardListAnimator direction="left">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {exampleList.map(item => (
-            <ExampleCard key={item.id} category={category} data={item} />
+            <ExampleCard key={item.id} category={category} example={item} />
           ))}
         </div>
       </CardListAnimator>

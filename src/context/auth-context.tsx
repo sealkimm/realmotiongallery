@@ -1,78 +1,78 @@
-'use client';
+// 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+// import { createContext, useContext, useEffect, useState } from 'react';
 
-import { supabase } from '@/lib/supabaseClient';
+// import { supabase } from '@/lib/supabase/client';
 
-// users 테이블 타입
-interface User {
-  id: string;
-  email: string;
-  nickname: string;
-  created_at: string;
-  avatar_url: string;
-}
+// // users 테이블 타입
+// interface User {
+//   id: string;
+//   email: string;
+//   nickname: string;
+//   created_at: string;
+//   avatar_url: string;
+// }
 
-interface AuthContextType {
-  user: User | null;
-  isLoading: boolean;
-}
+// interface AuthContextType {
+//   user: User | null;
+//   isLoading: boolean;
+// }
 
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  isLoading: true,
-});
+// const AuthContext = createContext<AuthContextType>({
+//   user: null,
+//   isLoading: true,
+// });
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+// export const AuthProvider = ({ children }) => {
+//   const [user, setUser] = useState<User | null>(null);
+//   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchUser = async (id: string) => {
-    const { data } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', id)
-      .maybeSingle();
+//   const fetchUser = async (id: string) => {
+//     const { data } = await supabase
+//       .from('users')
+//       .select('*')
+//       .eq('id', id)
+//       .maybeSingle();
 
-    setUser(data ?? null);
-  };
+//     setUser(data ?? null);
+//   };
 
-  const initUser = async () => {
-    const { data } = await supabase.auth.getUser();
-    const authUser = data?.user;
+//   const initUser = async () => {
+//     const { data } = await supabase.auth.getUser();
+//     const authUser = data?.user;
 
-    if (authUser) {
-      await fetchUser(authUser.id);
-    } else {
-      setUser(null);
-    }
+//     if (authUser) {
+//       await fetchUser(authUser.id);
+//     } else {
+//       setUser(null);
+//     }
 
-    setIsLoading(false);
-  };
+//     setIsLoading(false);
+//   };
 
-  const subscribeAuth = () =>
-    supabase.auth.onAuthStateChange((_event, session) => {
-      const authUser = session?.user;
+//   const subscribeAuth = () =>
+//     supabase.auth.onAuthStateChange((_event, session) => {
+//       const authUser = session?.user;
 
-      if (authUser) {
-        fetchUser(authUser.id);
-      } else {
-        setUser(null);
-      }
-    });
+//       if (authUser) {
+//         fetchUser(authUser.id);
+//       } else {
+//         setUser(null);
+//       }
+//     });
 
-  useEffect(() => {
-    initUser();
+//   useEffect(() => {
+//     initUser();
 
-    const { data } = subscribeAuth();
-    return () => data.subscription.unsubscribe();
-  }, []);
+//     const { data } = subscribeAuth();
+//     return () => data.subscription.unsubscribe();
+//   }, []);
 
-  return (
-    <AuthContext.Provider value={{ user, isLoading }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+//   return (
+//     <AuthContext.Provider value={{ user, isLoading }}>
+//       {children}
+//     </AuthContext.Provider>
+//   );
+// };
 
-export const useAuth = () => useContext(AuthContext);
+// export const useAuth = () => useContext(AuthContext);

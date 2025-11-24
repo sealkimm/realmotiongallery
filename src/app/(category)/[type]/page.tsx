@@ -3,7 +3,7 @@ import CardListAnimator from '@/animations/CardListAnimator';
 import { categories } from '@/data/categories';
 import { Search } from 'lucide-react';
 
-import { supabase } from '@/lib/supabaseClient';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
 import ExampleCard from '@/components/card/ExampleCard';
 import { SearchInput } from '@/components/inputs/SearchInput';
 import PageHeader from '@/components/layouts/PageHeader';
@@ -16,7 +16,8 @@ interface CategoryPageProps {
 /// 데이터 타입스크립트 해야됨??!!
 const CategoryPage = async ({ params }: CategoryPageProps) => {
   const { type } = params;
-
+  const supabase = createSupabaseServerClient();
+  // 리팩토링
   const category = categories.find(c => c.type === type);
 
   const { data: exampleListData, error } = await supabase

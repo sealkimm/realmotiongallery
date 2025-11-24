@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Edit, Trash } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { supabase } from '@/lib/supabaseClient';
+import { supabase } from '@/lib/supabase/client';
 import {
   AlertDialog,
   AlertDialogAction,

@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 import z from 'zod';
 
 import { createRandomNickname } from '@/lib/nickname';
-import { supabase } from '@/lib/supabaseClient';
+import { supabase } from '@/lib/supabase/client';
 import { upsertUserInfo } from '@/lib/user';
 import useSocialLogin from '@/hooks/useSocialLogin';
 import AuthSocialButtonGroups from '@/components/buttons/buttonGroups/AuthSocialButtonGroups';
@@ -193,7 +193,7 @@ const SignupPage = () => {
 
     if (authUser) {
       await upsertUserInfo(authUser);
-      await supabase.auth.refreshSession();
+      // await supabase.auth.refreshSession();
     }
 
     toast.success('✅ 회원가입이 완료되었습니다.');

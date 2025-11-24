@@ -8,7 +8,7 @@ import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import z from 'zod';
 
-import { supabase } from '@/lib/supabaseClient';
+import { supabase } from '@/lib/supabase/client';
 import useSocialLogin from '@/hooks/useSocialLogin';
 import AuthSocialButtonGroups from '@/components/buttons/buttonGroups/AuthSocialButtonGroups';
 import { Button } from '@/components/ui/button';
@@ -67,6 +67,7 @@ const LoginPage = () => {
 
       // 회원가입 페이지에서는 settimeout 줌
       router.push('/');
+      // router.refresh();
     } catch (error) {
       toast.error('서버 오류가 발생했습니다.');
       console.error(error);

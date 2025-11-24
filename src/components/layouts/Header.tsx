@@ -3,8 +3,8 @@
 import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/auth-context';
 import { categories } from '@/data/categories';
+import { useAuth } from '@/providers/AuthProvider';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import {
@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { supabase } from '@/lib/supabaseClient';
+import { supabase } from '@/lib/supabase/supabaseClient';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
@@ -48,18 +48,11 @@ gsap.registerPlugin(useGSAP);
 const Header = () => {
   const router = useRouter();
   const headerRef = useRef(null);
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, signOut } = useAuth();
   const [activeCategory, setActiveCategory] = useState('gsap');
 
   // 로딩부분 깔끔하게 다시 만들기
-
-  const onClickLogout = () => {
-    // 트라이문 해야할까...
-    supabase.auth.signOut().then(() => {
-      toast.success('로그아웃이 완료되었습니다.');
-      router.push('/');
-    });
-  };
+  // console.log('user', user);
 
   useGSAP(
     () => {
@@ -76,7 +69,12 @@ const Header = () => {
   );
 
   // ✳️✳️✳️✳️ 로그인할때 에러때문에 넣은 로딩인데 이거때문에 모션 안되서 잠시 지움 -> 다시 확인 꼭 하기!!
-  // if (isLoading) return null;
+  if (isLoading)
+    return (
+      <div className="flex h-full w-full items-center justify-center bg-green-500">
+        로딩중...
+      </div>
+    );
 
   return (
     <header
@@ -139,7 +137,7 @@ const Header = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={onClickLogout}
+                  onClick={signOut}
                   className="flex cursor-pointer items-center gap-4"
                 >
                   <LogOut size={16} />

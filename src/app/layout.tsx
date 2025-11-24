@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google';
 
 import '@/styles/globals.css';
 
-import { AuthProvider } from '@/context/auth-context';
+import { AuthProvider } from '@/providers/AuthProvider';
 
 import FloatingAddButton from '@/components/buttons/button/FloatingAddButton';
 import { Toaster } from '@/components/ui/sonner';
@@ -31,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
+        {/* 위치 바꾸기 */}
         <AuthProvider>
           <Theme>
             <Toaster position="top-center" />

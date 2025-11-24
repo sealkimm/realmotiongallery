@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { createRandomNickname } from '@/lib/nickname';
-import { supabase } from '@/lib/supabaseClient';
+import { supabase } from '@/lib/supabase/client';
 import { upsertUserInfo } from '@/lib/user';
 
 //소셜 로그인 전용 콜백페이지!
@@ -29,7 +29,7 @@ const AuthCallbackPage = () => {
       // const nickname = (await createRandomNickname()) ?? user.id.slice(0, 6);
 
       await upsertUserInfo(user, nickname);
-      await supabase.auth.refreshSession();
+      // await supabase.auth.refreshSession();
       router.push('/');
     };
 

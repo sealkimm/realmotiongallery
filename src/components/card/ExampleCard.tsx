@@ -1,28 +1,47 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Category } from '@/data/categories';
 import { Example } from '@/types/example';
-import { ArrowRight, Bookmark, Heart, MessageCircle } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import * as motion from 'motion/react-client';
 
 import { cn } from '@/lib/utils';
+import useExampleInteractions from '@/hooks/useExampleInteractions';
+import ExampleActions from '@/features/example/components/ExampleCardActions';
+import ExampleCardActions from '@/features/example/components/ExampleCardActions';
 
 import { Card, CardContent } from '../ui/card';
 
 // 코드 너무 지저분...정리 필요
+
 interface ExampleCardProps {
   category: Category;
-  data: Example;
+  example: Example;
   isHorizontal?: boolean;
 }
 
 const ExampleCard = ({
   category,
-  data,
+  example,
   isHorizontal = false,
 }: ExampleCardProps) => {
+  const router = useRouter();
+  const { handleLike, handleBookmark, likeCount, isLiked, isBookmarked } =
+    useExampleInteractions({ example });
+
+  const handleComment = async e => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    router.push(`/${example.type}/${example.id}#comment`);
+  };
+  //초기값 설정
+  // console.log('example', example);
   return (
-    <Link href={`/${category.type}/${data.id}`} className="example-card">
+    <Link href={`/${example.type}/${example.id}`} className="example-card">
       <motion.div
         whileHover={{ y: isHorizontal ? -5 : -10, scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
@@ -44,8 +63,8 @@ const ExampleCard = ({
               className={`absolute bg-gradient-to-b ${category.color} inset-0 h-full w-full opacity-30 mix-blend-overlay`}
             ></div>
             <Image
-              src={data.thumbnail}
-              alt={data.title}
+              src={example.thumbnail}
+              alt={example.title}
               width={isHorizontal ? 120 : 320}
               height={isHorizontal ? 120 : 160}
               className="h-full w-full object-cover"
@@ -59,7 +78,7 @@ const ExampleCard = ({
                   isHorizontal ? 'mb-1 text-base' : 'mb-3 text-xl',
                 )}
               >
-                {data.title}
+                {example.title}
               </h3>
               <p
                 className={cn(
@@ -69,35 +88,20 @@ const ExampleCard = ({
                     : 'text-base',
                 )}
               >
-                {data.description}
+                {example.description}
                 {isHorizontal && <ArrowRight size={14} />}
               </p>
             </div>
             <div className="mt-3 flex items-center justify-between">
               {/* 컴포분리 */}
-              <div className="flex items-center justify-end gap-3">
-                {/*  중복.. 뭔가 똑똑한 방법이 있을까 */}
-                <button
-                  type="button"
-                  className="flex items-center gap-1 text-gray-400 transition-colors hover:text-red-500"
-                >
-                  <Heart size={16} />
-                  <span className="text-sm">10</span>
-                </button>
-                <button
-                  type="button"
-                  className="flex items-center gap-1 text-gray-400 transition-colors hover:text-blue-500"
-                >
-                  <MessageCircle size={16} />
-                  <span className="text-sm">24</span>
-                </button>
-                <button
-                  type="button"
-                  className="flex items-center gap-1 text-gray-400 transition-colors hover:text-yellow-500"
-                >
-                  <Bookmark size={16} />
-                </button>
-              </div>
+              <ExampleCardActions
+                handleLike={handleLike}
+                handleBookmark={handleBookmark}
+                handleComment={handleComment}
+                likeCount={likeCount}
+                isLiked={isLiked}
+                isBookmarked={isBookmarked}
+              />
               {!isHorizontal && (
                 <div className={category.textColor}>
                   <div>
