@@ -3,43 +3,58 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Category } from '@/data/categories';
-import { Example } from '@/types/example';
+import type { Category } from '@/data/categories';
+import type { Example } from '@/types/example';
 import { ArrowRight } from 'lucide-react';
 import * as motion from 'motion/react-client';
 
 import { cn } from '@/lib/utils';
 import useExampleInteractions from '@/hooks/useExampleInteractions';
-import ExampleActions from '@/features/example/components/ExampleCardActions';
 import ExampleCardActions from '@/features/example/components/ExampleCardActions';
 
-import { Card, CardContent } from '../ui/card';
-
-// 코드 너무 지저분...정리 필요
+import { Card, CardContent } from './ui/card';
 
 interface ExampleCardProps {
   category: Category;
   example: Example;
-  isHorizontal?: boolean;
+  layout?: 'horizontal' | 'vertical';
 }
 
 const ExampleCard = ({
   category,
   example,
-  isHorizontal = false,
+  layout = 'vertical',
 }: ExampleCardProps) => {
   const router = useRouter();
-  const { handleLike, handleBookmark, likeCount, isLiked, isBookmarked } =
-    useExampleInteractions({ example });
+  const interactions = useExampleInteractions({ example });
+  const isHorizontal = layout === 'horizontal';
 
-  const handleComment = async e => {
+  const handleComment = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
     router.push(`/${example.type}/${example.id}#comment`);
   };
-  //초기값 설정
-  // console.log('example', example);
+
+  const cardLayoutClass = cn(
+    'flex h-full overflow-hidden rounded-xl border-0 bg-gray-900',
+    isHorizontal ? 'flex-row items-center' : 'flex-col',
+  );
+  const imageWrapperClass = cn(
+    'relative',
+    isHorizontal ? 'aspect-square h-full w-1/3' : 'h-40 w-full',
+  );
+
+  const titleClass = cn(
+    'line-clamp-1 font-semibold',
+    isHorizontal ? 'mb-1 text-base' : 'mb-3 text-xl',
+  );
+
+  const descClass = cn(
+    'line-clamp-1 text-gray-400',
+    isHorizontal ? 'flex items-center gap-2 text-sm' : 'text-base',
+  );
+
   return (
     <Link href={`/${example.type}/${example.id}`} className="example-card">
       <motion.div
@@ -47,18 +62,8 @@ const ExampleCard = ({
         whileTap={{ scale: 0.98 }}
         className={`bg-gradient-to-br ${category.color} h-full rounded-xl p-[2px]`}
       >
-        <Card
-          className={cn(
-            'flex h-full overflow-hidden rounded-xl border-0 bg-gray-900',
-            isHorizontal ? 'flex-row items-center' : 'flex-col',
-          )}
-        >
-          <div
-            className={cn(
-              'relative',
-              isHorizontal ? 'aspect-square h-full w-1/3' : 'h-40 w-full',
-            )}
-          >
+        <Card className={cardLayoutClass}>
+          <div className={imageWrapperClass}>
             <div
               className={`absolute bg-gradient-to-b ${category.color} inset-0 h-full w-full opacity-30 mix-blend-overlay`}
             ></div>
@@ -72,35 +77,16 @@ const ExampleCard = ({
           </div>
           <CardContent className={cn(isHorizontal ? 'p-4' : 'p-6')}>
             <div>
-              <h3
-                className={cn(
-                  'line-clamp-1 font-semibold',
-                  isHorizontal ? 'mb-1 text-base' : 'mb-3 text-xl',
-                )}
-              >
-                {example.title}
-              </h3>
-              <p
-                className={cn(
-                  'line-clamp-1 text-gray-400',
-                  isHorizontal
-                    ? 'flex items-center gap-2 text-sm'
-                    : 'text-base',
-                )}
-              >
+              <h3 className={titleClass}>{example.title}</h3>
+              <p className={descClass}>
                 {example.description}
                 {isHorizontal && <ArrowRight size={14} />}
               </p>
             </div>
             <div className="mt-3 flex items-center justify-between">
-              {/* 컴포분리 */}
               <ExampleCardActions
-                handleLike={handleLike}
-                handleBookmark={handleBookmark}
+                {...interactions}
                 handleComment={handleComment}
-                likeCount={likeCount}
-                isLiked={isLiked}
-                isBookmarked={isBookmarked}
               />
               {!isHorizontal && (
                 <div className={category.textColor}>

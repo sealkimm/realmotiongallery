@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
+    "verbatimModuleSyntax": true,
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "strictNullChecks": true, // 엄격한 null 체크
+    // "strictNullChecks": true, // 엄격한 null 체크
     "noImplicitReturns": true, // 함수 내 모든 경로에서 반드시 값을 반환하도록 강제
     "noUnusedLocals": true, // 사용되지 않는 로컬 변수 경고
     "noUnusedParameters": true, // 사용되지 않는 매개변수 경고

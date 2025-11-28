@@ -12,9 +12,7 @@
 - [ ] 다양한 프론트엔드 모션/애니메이션 예제를 공유하는 웹 갤러리
 - [ ] 기술 스택: Next.js(App Router) + TypeScript + TailwindCSS + Shadcn UI + Supabase(Auth/DB) + GSAP + Framer Motion + (추후) AI 기능
 
-<!--  별로임, 다시 쓰기 -->
-
-- [ ] 주요 도메인
+- [ ] 주요 도메인??????????????????????????????????별로임 다시쓰기
   - [ ] Auth (이메일/소셜 로그인, 회원가입, 탈퇴)
   - [ ] Examples (예제 CRUD, 태그, 썸네일, 모션)
   - [ ] Interactions (좋아요, 북마크, 조회수)

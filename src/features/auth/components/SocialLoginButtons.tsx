@@ -4,13 +4,13 @@ import { Button } from '@/components/ui/button';
 // useSocialLogin 훅에도 똑같이 정의 되어있음 공통으로 뺄건데, 어디에 두어야 하나??
 type Provider = 'google' | 'github' | 'kakao';
 
-interface AuthSocialButtonGroupsProps {
+interface SocialLoginButtonsProps {
   onClickSocialLogin: (provider: Provider) => void;
 }
 
-const AuthSocialButtonGroups = ({
+const SocialLoginButtons = ({
   onClickSocialLogin,
-}: AuthSocialButtonGroupsProps) => {
+}: SocialLoginButtonsProps) => {
   return (
     <div className="flex flex-col gap-3">
       <Button
@@ -37,4 +37,4 @@ const AuthSocialButtonGroups = ({
     </div>
   );
 };
-export default AuthSocialButtonGroups;
+export default SocialLoginButtons;

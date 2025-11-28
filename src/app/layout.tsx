@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
 import '@/styles/globals.css';
@@ -14,7 +14,6 @@ import Theme from '../providers/theme-provider';
 
 const inter = Inter({
   subsets: ['latin', 'latin-ext'],
-  // variable: '--font-inter',
 });
 
 // 페이지별 다르게 하기

@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User } from '@supabase/supabase-js';
+import type { User } from '@supabase/supabase-js';
 
 import { supabase } from '@/lib/supabase/client';
 
@@ -14,7 +14,6 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   isLoading: true,
-  //   이게 뭔지 모르겠다. 필요한지 확인하기
   signOut: async () => {},
 });
 

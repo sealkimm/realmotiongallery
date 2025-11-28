@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { commands, ICommand } from '@uiw/react-md-editor';
+import { commands, type ICommand } from '@uiw/react-md-editor';
 
 import { removeAllowTransparency } from '@/lib/utils';
 
@@ -9,7 +9,7 @@ const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
 
 interface MarkdownEditorProps {
   value: string;
-  onChange: (value: string) => void;
+  onChange: (value?: string) => void;
 }
 
 const customCommands: ICommand[] = [
@@ -26,6 +26,12 @@ const customCommands: ICommand[] = [
   commands.link,
 ];
 
+const extraCommands: ICommand[] = [
+  commands.codeEdit,
+  commands.codeLive,
+  commands.fullscreen,
+];
+
 const MarkdownEditor = ({ value, onChange }: MarkdownEditorProps) => {
   const cleanedValue = removeAllowTransparency(value);
 
@@ -35,7 +41,7 @@ const MarkdownEditor = ({ value, onChange }: MarkdownEditorProps) => {
         value={cleanedValue}
         onChange={onChange}
         commands={customCommands}
-        extensions={[commands.codeEdit, commands.codeLive, commands.fullscreen]}
+        extraCommands={extraCommands}
       />
     </div>
   );

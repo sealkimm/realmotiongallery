@@ -1,8 +1,7 @@
-import { MouseEventHandler } from 'react';
+import type { MouseEventHandler } from 'react';
 import { Bookmark, Heart, MessageCircle } from 'lucide-react';
 
 interface ExampleCardActionsProps {
-  /// MouseEventHandler<HTMLButtonElement>; 이게 맞나
   handleLike: MouseEventHandler<HTMLButtonElement>;
   handleBookmark: MouseEventHandler<HTMLButtonElement>;
   handleComment: MouseEventHandler<HTMLButtonElement>;
@@ -13,10 +12,10 @@ interface ExampleCardActionsProps {
 const ExampleCardActions = ({
   handleLike,
   handleBookmark,
+  handleComment,
   likeCount,
   isLiked,
   isBookmarked,
-  handleComment,
 }: ExampleCardActionsProps) => {
   return (
     <div className="flex items-center justify-end gap-3">
@@ -41,11 +40,11 @@ const ExampleCardActions = ({
       </button>
       <button
         type="button"
+        onClick={handleBookmark}
         className="flex items-center gap-1 p-1 text-gray-400 transition-colors hover:text-yellow-500"
       >
         <Bookmark
           size={16}
-          onClick={handleBookmark}
           className={isBookmarked ? 'fill-yellow-500 text-yellow-500' : ''}
         />
       </button>

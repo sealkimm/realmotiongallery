@@ -1,4 +1,4 @@
-import { VariantProps } from 'class-variance-authority';
+import type { VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -7,7 +7,7 @@ import { Badge, badgeVariants } from '@/components/ui/badge';
 interface TagProps extends VariantProps<typeof badgeVariants> {
   label: string;
   color?: string;
-  onClickRemove?: (label) => void;
+  onClickRemove?: (label: string) => void;
   removable?: boolean;
   className?: string;
 }

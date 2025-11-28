@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/providers/AuthProvider';
-import { Example } from '@/types/example';
+import type { Example } from '@/types/example';
 import { toast } from 'sonner';
 
 import { supabase } from '@/lib/supabase/client';

@@ -1,11 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import { useGSAP } from '@gsap/react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+import { gsap, useGSAP } from '@/lib/gsap';
 
 interface CardListAnimatorProps {
   direction: 'up' | 'down' | 'left' | 'right';
@@ -20,7 +17,7 @@ const FROM_MAP = {
 };
 
 const CardListAnimator = ({ direction, children }: CardListAnimatorProps) => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef(null);
 
   useGSAP(() => {
     if (!wrapperRef.current) return;

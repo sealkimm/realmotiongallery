@@ -1,46 +1,34 @@
-//gsap땜에 client 넣음, 분리하기
-import { notFound } from 'next/navigation';
 import { categories } from '@/data/categories';
-import { Example } from '@/types/example';
+import type { Example } from '@/types/example';
 
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-import CategorySection from '@/components/sections/CategorySection';
-import HeroSection from '@/components/sections/HeroSection';
+import CategorySection from '@/features/home/components/CategorySection';
+import HeroSection from '@/features/home/components/HeroSection';
 
-const MainPage = async () => {
-  const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+const HomePage = async () => {
+  const supabase = createSupabaseServerClient();
 
-  const { data: examples, error } = await supabase.from('examples').select('*');
+  const [
+    {
+      data: { user },
+    },
+    { data: examples, error: examplesError },
+  ] = await Promise.all([
+    supabase.auth.getUser(),
+    supabase.from('examples').select('*'),
+  ]);
 
-  const { data: likes } = await supabase
-    .from('likes')
-    .select('*')
-    .eq('user_id', user?.id);
+  if (examplesError) throw new Error('예제 목록을 불러오지 못했습니다.');
 
-  const { data: bookmarks } = await supabase
-    .from('bookmarks')
-    .select('*')
-    .eq('user_id', user?.id);
+  const [{ data: likes }, { data: bookmarks }] = await Promise.all([
+    supabase.from('likes').select('*').eq('user_id', user?.id),
+    supabase.from('bookmarks').select('*').eq('user_id', user?.id),
+  ]);
 
-  if (!examples) {
-    //다른 페이지랑 통일성 주기
-    return notFound();
-  }
+  const likedSet = new Set(likes?.map(i => i.example_id) ?? []);
+  const bookmarkedSet = new Set(bookmarks?.map(i => i.example_id) ?? []);
 
-  // 이 방식도 쓸 수 있는지 보기
-  // const list = examples.map(e => ({
-  //   ...e,
-  //   isLiked: !!e.likes?.length,
-  //   isBookmarked: !!e.bookmarks?.length,
-  // }));
-
-  const likedSet = new Set(likes?.map(i => i.example_id));
-  const bookmarkedSet = new Set(bookmarks?.map(i => i.example_id));
-
-  const exampleWithInteractions: Example[] = examples.map(item => ({
+  const exampleWithInteractions: Example[] = (examples ?? []).map(item => ({
     ...item,
     isLiked: likedSet.has(item.id),
     isBookmarked: bookmarkedSet.has(item.id),
@@ -55,14 +43,12 @@ const MainPage = async () => {
   }, {});
 
   const filteredCategories = categories.filter(
-    category => examplesByType[category.type]?.length > 0,
+    cate => examplesByType[cate.type]?.length > 0,
   );
 
   return (
-    <div>
-      {/* 메인 배너 영역 */}
+    <>
       <HeroSection />
-      {/* 메인 컨텐츠 영역*/}
       <div className="relative pb-40">
         <div className="container mx-auto flex flex-col gap-24 px-4">
           {filteredCategories.map(category => (
@@ -74,8 +60,8 @@ const MainPage = async () => {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default MainPage;
+export default HomePage;

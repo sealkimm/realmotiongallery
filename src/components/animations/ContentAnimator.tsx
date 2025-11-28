@@ -2,16 +2,14 @@
 
 // 위치 다시...
 import { useRef } from 'react';
-import { useGSAP } from '@gsap/react';
-import { gsap } from 'gsap';
 
-gsap.registerPlugin(useGSAP);
+import { gsap, useGSAP } from '@/lib/gsap';
 
-interface AnimatedContentWrapperProps {
+interface ContentAnimatorProps {
   children: React.ReactNode;
 }
 
-const AnimatedContentWrapper = ({ children }: AnimatedContentWrapperProps) => {
+const ContentAnimator = ({ children }: ContentAnimatorProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -35,4 +33,4 @@ const AnimatedContentWrapper = ({ children }: AnimatedContentWrapperProps) => {
   );
 };
 
-export default AnimatedContentWrapper;
+export default ContentAnimator;

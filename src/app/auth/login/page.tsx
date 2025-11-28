@@ -5,12 +5,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
+import { data } from 'motion/react-client';
 import { toast } from 'sonner';
 import z from 'zod';
 
 import { supabase } from '@/lib/supabase/client';
 import useSocialLogin from '@/hooks/useSocialLogin';
-import AuthSocialButtonGroups from '@/components/buttons/buttonGroups/AuthSocialButtonGroups';
+import useSupabaseRequest from '@/hooks/useSupabaseRequest';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -28,6 +29,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import AuthSocialButtonGroups from '@/features/auth/components/SocialLoginButtons';
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -48,31 +50,26 @@ const LoginPage = () => {
     },
   });
 
-  const onSubmit = async (data: FormValues) => {
-    const { email, password } = data;
-
-    try {
-      const { data: signInData, error } =
-        await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-      if (error) {
-        toast.error('❌ 이메일 또는 비밀번호를 다시 확인해주세요.');
-        return;
-      }
-
-      toast.success('✅ 로그인이 완료되었습니다.'); // 알림 필요없는거 같으면 빼기
-
-      // 회원가입 페이지에서는 settimeout 줌
+  const { execute, isLoading } = useSupabaseRequest<FormValues>({
+    requestFn: async ({ email, password }) => {
+      const result = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      return result;
+    },
+    onSuccess: () => {
+      toast.success('✅ 로그인이 완료되었습니다.');
       router.push('/');
-      // router.refresh();
-    } catch (error) {
-      toast.error('서버 오류가 발생했습니다.');
-      console.error(error);
-      toast.error('로그인 실패');
-    }
+    },
+    onError: error => {
+      console.error('로그인 실패', error);
+      toast.error('❌ 이메일 또는 비밀번호를 다시 확인해주세요.');
+    },
+  });
+
+  const onSubmit = (data: FormValues) => {
+    execute(data);
   };
 
   return (
@@ -105,6 +102,7 @@ const LoginPage = () => {
                             <Input
                               {...field}
                               placeholder="이메일을 입력해주세요."
+                              disabled={isLoading}
                             />
                           </FormControl>
                           <FormMessage />
@@ -126,6 +124,7 @@ const LoginPage = () => {
                               {...field}
                               type="password"
                               placeholder="비밀번호를 입력해주세요."
+                              disabled={isLoading}
                             />
                           </FormControl>
                           <FormMessage />
@@ -134,20 +133,16 @@ const LoginPage = () => {
                     />
                   </div>
                   <div>
-                    {/* <Button type="submit" className="gradient-background w-full">
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 animate-spin" /> Signing In...
-                      </>
-                    ) : (
-                      'Sign In'
-                    )}
-                  </Button> */}
                     <Button
                       type="submit"
                       className="gradient-background w-full"
+                      disabled={isLoading}
                     >
-                      Sign In
+                      {isLoading ? (
+                        <Loader2 className="mr-2 animate-spin" />
+                      ) : (
+                        'login'
+                      )}
                     </Button>
                   </div>
                 </form>

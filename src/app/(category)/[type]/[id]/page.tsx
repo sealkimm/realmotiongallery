@@ -1,16 +1,13 @@
-import { notFound } from 'next/navigation';
-import AnimatedContentWrapper from '@/animations/AnimatedContentWrapper';
 import { categories } from '@/data/categories';
 
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-import EditDeleteButtonGroups from '@/components/buttons/buttonGroups/EditDeleteButtonGroups';
-import ExampleCard from '@/components/card/ExampleCard';
+import ContentAnimator from '@/components/animations/ContentAnimator';
 import MarkdownViewer from '@/components/editor/MarkdownViewer';
+import ExampleCard from '@/components/ExampleCard';
 import PageHeader from '@/components/layouts/PageHeader';
+import EditDeleteButtonGroups from '@/features/example/components/EditDeleteButtonGroups';
 
-// import { gsapDummyData } from '@/data/categories';
-
-interface Props {
+interface ExamplePageProps {
   params: {
     type: string;
     id: string;
@@ -43,37 +40,36 @@ const relatedExamples = [
   },
 ];
 
-const ExamplePage = async ({ params }: Props) => {
+const ExamplePage = async ({ params }: ExamplePageProps) => {
   const { type, id } = params;
-  const supabase = await createSupabaseServerClient();
-  //이거 categories 중복으로 많이 쓰네...
+  const supabase = createSupabaseServerClient();
   const category = categories.find(c => c.type === type);
 
-  // exampleData 네이밍... 다른 페이지랑 통일성 주기
-  const { data: exampleData, error } = await supabase
+  const { data: example, error: exampleError } = await supabase
     .from('examples')
     .select('*')
     .eq('id', id)
+    .eq('type', type)
     .single();
 
-  if (!category || !exampleData) {
-    return notFound();
-  }
+  if (!category || exampleError) throw new Error('예제를 불러오지 못했습니다.');
+
+  const pageHeaderProps = {
+    title: example.title,
+    description: example.description,
+    badgeTitle: category.title,
+    badgeColor: category.color,
+    tags: example.tags,
+  };
 
   return (
     <div className="pb-20 pt-24">
       <div className="container mx-auto px-4">
-        <AnimatedContentWrapper>
-          <PageHeader
-            title={exampleData.title}
-            description={exampleData.description}
-            badgeTitle={category.title}
-            badgeColor={category.color}
-            tags={exampleData.tags}
-          />
-          <EditDeleteButtonGroups exampleId={exampleData.id} />
+        <ContentAnimator>
+          <PageHeader {...pageHeaderProps} />
+          <EditDeleteButtonGroups exampleId={example.id} />
           <div className="mb-10">
-            <MarkdownViewer content={exampleData.content} />
+            <MarkdownViewer content={example.content} />
           </div>
           {/* 관련 예제(나중에 추가) => 이전, 다음 예제*/}
           <div>
@@ -84,7 +80,7 @@ const ExamplePage = async ({ params }: Props) => {
                   key={item.id}
                   category={category}
                   example={item}
-                  isHorizontal
+                  layout="horizontal"
                 />
               ))}
             </div>
@@ -95,7 +91,7 @@ const ExamplePage = async ({ params }: Props) => {
           >
             댓글영역입니다.
           </div>
-        </AnimatedContentWrapper>
+        </ContentAnimator>
       </div>
     </div>
   );

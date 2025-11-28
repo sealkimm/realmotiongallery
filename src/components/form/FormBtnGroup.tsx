@@ -7,6 +7,7 @@ interface FormBtnGroupProps {
   isEditMode: boolean;
 }
 
+// 회원가입 페이지와 통일성있게 네이밍하고 위치 옮기기
 const FormBtnGroup = ({ isEditMode }: FormBtnGroupProps) => {
   const router = useRouter();
 
