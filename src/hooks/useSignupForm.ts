@@ -52,9 +52,20 @@ const useSignupForm = ({ onSuccess }: UseSignupFormProps) => {
       });
       return { data, error };
     },
-    onSuccess: ({ user }) => {
+    onSuccess: async ({ user }) => {
       if (user) {
-        insertUserInfo(user);
+        await insertUserInfo(user);
+
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: user.email!,
+          password: form.getValues('password'),
+        });
+
+        if (signInError) {
+          console.error('로긌 실패', signInError);
+          toast.error('❌ 로그인에 실패했습니다.');
+          return;
+        }
       }
       toast.success('✅ 회원가입이 완료되었습니다.');
       onSuccess();

@@ -39,17 +39,17 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
 
     // import 순서 규칙
-    'import/order': [
-      'warn',
-      {
-        groups: [
-          'builtin',
-          'external',
-          'internal',
-          ['parent', 'sibling', 'index'],
-        ],
-        'newlines-between': 'always',
-      },
-    ],
+    // 'import/order': [
+    //   'warn',
+    //   {
+    //     groups: [
+    //       'builtin',
+    //       'external',
+    //       'internal',
+    //       ['parent', 'sibling', 'index'],
+    //     ],
+    //     'newlines-between': 'always',
+    //   },
+    // ],
   },
 };

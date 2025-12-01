@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -23,7 +24,6 @@ const SignupPage = () => {
   };
 
   return (
-    // signin 페이지랑 유사함 컴포넌트 분리 알아보기
     <div className="fixed inset-0 z-50 flex h-screen items-center justify-center border border-blue-500 bg-background">
       <div className="w-full max-w-md">
         <Card className="border-white/10 bg-gray-900/50 backdrop-blur-md">

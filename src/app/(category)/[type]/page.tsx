@@ -10,8 +10,8 @@ interface CategoryPageProps {
 }
 
 const CategoryPage = async ({ params }: CategoryPageProps) => {
-  const { type } = params;
-  const supabase = createSupabaseServerClient();
+  const { type } = await params;
+  const supabase = await createSupabaseServerClient();
   const category = categories.find(c => c.type === type);
 
   const { data: examples, error: examplesError } = await supabase

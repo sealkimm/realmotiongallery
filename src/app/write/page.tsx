@@ -9,7 +9,7 @@ interface WritePageProps {
 }
 // 리팩토링
 const WritePage = async ({ searchParams }: WritePageProps) => {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { id: exampleId } = searchParams;
 
   let exampleData = null;

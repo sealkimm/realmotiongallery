@@ -5,7 +5,7 @@ import CategorySection from '@/features/home/components/CategorySection';
 import HeroSection from '@/features/home/components/HeroSection';
 
 const HomePage = async () => {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
 
   const [
     {

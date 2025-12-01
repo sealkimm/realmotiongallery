@@ -10,11 +10,11 @@ import useSupabaseRequest from '@/hooks/useSupabaseRequest';
 import { Button } from '@/components/ui/button';
 import DeleteConfirmDialog from '@/features/example/components/DeleteConfirmDialog';
 
-interface EditDeleteButtonGroupProps {
+interface EditDeleteButtonsProps {
   exampleId: string;
 }
 
-const EditDeleteButtonGroup = ({ exampleId }: EditDeleteButtonGroupProps) => {
+const EditDeleteButtons = ({ exampleId }: EditDeleteButtonsProps) => {
   const router = useRouter();
 
   const { execute, isLoading } = useSupabaseRequest({
@@ -60,4 +60,4 @@ const EditDeleteButtonGroup = ({ exampleId }: EditDeleteButtonGroupProps) => {
   );
 };
 
-export default EditDeleteButtonGroup;
+export default EditDeleteButtons;

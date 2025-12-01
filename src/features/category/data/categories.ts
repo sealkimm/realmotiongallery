@@ -1,4 +1,4 @@
-import type { Category } from '../types/category';
+import type { Category } from '@/features/category/types/category';
 
 export const categories: Category[] = [
   {

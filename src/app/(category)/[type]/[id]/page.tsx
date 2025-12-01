@@ -3,7 +3,7 @@ import ContentAnimator from '@/components/animations/ContentAnimator';
 import MarkdownViewer from '@/components/editor/MarkdownViewer';
 import PageHeader from '@/components/layouts/PageHeader';
 import { categories } from '@/features/category/data/categories';
-import EditDeleteButtonGroups from '@/features/example/components/EditDeleteButtonGroup';
+import EditDeleteButtons from '@/features/example/components/EditDeleteButtons';
 import ExampleCard from '@/features/example/components/ExampleCard';
 
 interface ExamplePageProps {
@@ -40,8 +40,11 @@ const relatedExamples = [
 ];
 
 const ExamplePage = async ({ params }: ExamplePageProps) => {
-  const { type, id } = params;
-  const supabase = createSupabaseServerClient();
+  const { type, id } = await params;
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   const category = categories.find(c => c.type === type);
 
   const { data: example, error: exampleError } = await supabase
@@ -52,6 +55,8 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
     .single();
 
   if (!category || exampleError) throw new Error('예제를 불러오지 못했습니다.');
+
+  const isAuthor = user?.id === example?.created_by;
 
   const pageHeaderProps = {
     title: example.title,
@@ -66,7 +71,7 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
       <div className="container mx-auto px-4">
         <ContentAnimator>
           <PageHeader {...pageHeaderProps} />
-          <EditDeleteButtonGroups exampleId={example.id} />
+          {isAuthor && <EditDeleteButtons exampleId={example.id} />}
           <div className="mb-10">
             <MarkdownViewer content={example.content} />
           </div>

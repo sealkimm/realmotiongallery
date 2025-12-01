@@ -8,7 +8,7 @@ import * as motion from 'motion/react-client';
 
 import { cn } from '@/lib/utils';
 import useExampleInteractions from '@/hooks/useExampleInteractions';
-import type { Category } from '@/features/category/data/categories';
+import type { Category } from '@/features/category/types/category';
 import ExampleCardActions from '@/features/example/components/ExampleCardActions';
 import type { Example } from '@/features/example/types/example';
 

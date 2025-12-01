@@ -4,6 +4,7 @@ export interface Example {
   title: string;
   description: string;
   content: string;
+  created_by: string;
   created_at: string;
   thumbnail: string;
   tags?: string[];
