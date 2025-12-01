@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/providers/AuthProvider';
-import type { Example } from '@/types/example';
 import { toast } from 'sonner';
 
 import { supabase } from '@/lib/supabase/client';
+import type { Example } from '@/features/example/types/example';
 
 interface UseExampleInteractionsProps {
   example: Example;

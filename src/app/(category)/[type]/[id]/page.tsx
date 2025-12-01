@@ -1,11 +1,10 @@
-import { categories } from '@/data/categories';
-
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import ContentAnimator from '@/components/animations/ContentAnimator';
 import MarkdownViewer from '@/components/editor/MarkdownViewer';
-import ExampleCard from '@/components/ExampleCard';
 import PageHeader from '@/components/layouts/PageHeader';
-import EditDeleteButtonGroups from '@/features/example/components/EditDeleteButtonGroups';
+import { categories } from '@/features/category/data/categories';
+import EditDeleteButtonGroups from '@/features/example/components/EditDeleteButtonGroup';
+import ExampleCard from '@/features/example/components/ExampleCard';
 
 interface ExamplePageProps {
   params: {

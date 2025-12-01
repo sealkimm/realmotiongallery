@@ -2,14 +2,14 @@
 
 import { useRef } from 'react';
 import Link from 'next/link';
-import type { Category } from '@/data/categories';
-import type { Example } from '@/types/example';
 import { ChevronRight } from 'lucide-react';
 
 import { gsap, useGSAP } from '@/lib/gsap';
 import CardListAnimator from '@/components/animations/CardListAnimator';
-import ExampleCard from '@/components/ExampleCard';
 import { Button } from '@/components/ui/button';
+import type { Category } from '@/features/category/data/categories';
+import ExampleCard from '@/features/example/components/ExampleCard';
+import type { Example } from '@/features/example/types/example';
 
 interface CategorySectionProps {
   category: Category;

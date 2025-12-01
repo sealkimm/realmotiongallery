@@ -1,12 +1,4 @@
-export interface Category {
-  id: number;
-  type: string;
-  title: string;
-  description: string;
-  color: string;
-  textColor: string;
-  borderColor: string;
-}
+import type { Category } from '../types/category';
 
 export const categories: Category[] = [
   {

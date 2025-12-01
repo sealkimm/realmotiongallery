@@ -1,10 +1,9 @@
-import { categories } from '@/data/categories';
-
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import CardListAnimator from '@/components/animations/CardListAnimator';
-import ExampleCard from '@/components/ExampleCard';
 import PageHeader from '@/components/layouts/PageHeader';
 import SearchBar from '@/features/category/components/SearchBar';
+import { categories } from '@/features/category/data/categories';
+import ExampleCard from '@/features/example/components/ExampleCard';
 
 interface CategoryPageProps {
   params: { type: string };

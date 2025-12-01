@@ -1,4 +1,4 @@
-import { ADJ_LIST, NOUN_LIST } from '@/constants/constants';
+import { ADJ_LIST, NOUN_LIST } from '@/constants';
 
 import { supabase } from '@/lib/supabase/client';
 

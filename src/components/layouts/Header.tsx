@@ -3,7 +3,6 @@
 import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { categories } from '@/data/categories';
 import { useAuth } from '@/providers/AuthProvider';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
@@ -21,6 +20,7 @@ import { toast } from 'sonner';
 import { supabase } from '@/lib/supabase/supabaseClient';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { categories } from '@/features/category/data/categories';
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import {

@@ -3,16 +3,16 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import type { Category } from '@/data/categories';
-import type { Example } from '@/types/example';
 import { ArrowRight } from 'lucide-react';
 import * as motion from 'motion/react-client';
 
 import { cn } from '@/lib/utils';
 import useExampleInteractions from '@/hooks/useExampleInteractions';
+import type { Category } from '@/features/category/data/categories';
 import ExampleCardActions from '@/features/example/components/ExampleCardActions';
+import type { Example } from '@/features/example/types/example';
 
-import { Card, CardContent } from './ui/card';
+import { Card, CardContent } from '../../../components/ui/card';
 
 interface ExampleCardProps {
   category: Category;

@@ -2,8 +2,6 @@
 
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { categories } from '@/data/categories';
-import type { Example } from '@/types/example';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Tag as TagIcon, X } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -33,6 +31,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { categories } from '@/features/category/data/categories';
+import type { Example } from '@/features/example/types/example';
 
 import Tag from '../../../components/tag/Tag';
 import { FORM_MESSAGES, formSchema, type FormValues } from '../formSchema';

@@ -1,7 +1,6 @@
-import { categories } from '@/data/categories';
-import type { Example } from '@/types/example';
-
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { categories } from '@/features/category/data/categories';
+import type { Example } from '@/features/example/types/example';
 import CategorySection from '@/features/home/components/CategorySection';
 import HeroSection from '@/features/home/components/HeroSection';
 
