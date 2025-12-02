@@ -1,7 +1,5 @@
 'use client';
 
-import type { User } from '@/types/user';
-
 import useExampleInteractions from '@/hooks/useExampleInteractions';
 import PageHeader from '@/components/layouts/PageHeader';
 import { categories } from '@/features/category/data/categories';
@@ -9,15 +7,11 @@ import EditDeleteButtons from '@/features/example/components/EditDeleteButtons';
 import ExampleCardActions from '@/features/example/components/ExampleCardActions';
 import WriterInfo from '@/features/example/components/WriterInfo';
 
-import type { Example } from '../types/example';
+import type { ExampleWithRelations } from '../types/example';
 import TagList from './TagList';
 
-type ExampleWithUser = Example & {
-  users: Pick<User, 'nickname' | 'avatar_url'>;
-};
-
 interface ExampleMetaSectionProps {
-  example: ExampleWithUser;
+  example: ExampleWithRelations;
   isAuthor: boolean;
 }
 

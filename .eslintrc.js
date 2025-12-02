@@ -14,6 +14,9 @@ module.exports = {
       typescript: {
         project: './tsconfig.json',
       },
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
     },
   },
   extends: [
@@ -27,6 +30,9 @@ module.exports = {
     'prettier',
   ],
   rules: {
+    // import 관련 규칙
+    'import/no-unresolved': 'off',
+
     // unused-vars 관련 규칙
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],

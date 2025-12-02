@@ -17,7 +17,8 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
   const { data: examples, error: examplesError } = await supabase
     .from('examples')
     .select('*')
-    .eq('type', type);
+    .eq('type', type)
+    .order('created_at');
 
   if (!category || examplesError)
     throw new Error('예제 목록을 불러오지 못했습니다.');

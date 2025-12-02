@@ -4,6 +4,7 @@ import MarkdownViewer from '@/components/editor/MarkdownViewer';
 import { categories } from '@/features/category/data/categories';
 import ExampleCard from '@/features/example/components/ExampleCard';
 import ExampleMetaSection from '@/features/example/components/ExampleMetaSection';
+import type { ExampleFull } from '@/features/example/types/example';
 
 interface ExamplePageProps {
   params: {
@@ -50,20 +51,35 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
 
   const { data: example, error: exampleError } = await supabase
     .from('examples')
-    .select(`*, users(nickname, avatar_url)`)
+    .select(
+      `*, users(nickname, avatar_url), likes(user_id), bookmarks(user_id)`,
+    )
     .eq('id', id)
     .eq('type', type)
-    .single();
+    .order('created_at')
+    .single<ExampleFull>();
 
   if (!category || exampleError) throw new Error('예제를 불러오지 못했습니다.');
 
   const isAuthor = user?.id === example?.created_by;
 
+  const isLiked = example.likes.some(like => like.user_id === user?.id);
+  const isBookmarked = example.bookmarks.some(bm => bm.user_id === user?.id);
+
+  const exampleWithInteractions = {
+    ...example,
+    isLiked,
+    isBookmarked,
+  };
+
   return (
     <div className="pb-20 pt-24">
       <div className="container mx-auto px-4">
         <ContentAnimator>
-          <ExampleMetaSection example={example} isAuthor={isAuthor} />
+          <ExampleMetaSection
+            example={exampleWithInteractions}
+            isAuthor={isAuthor}
+          />
           <MarkdownViewer content={example.content} />
           {/* 관련 예제(나중에 추가) => 이전, 다음 예제*/}
           <div>
