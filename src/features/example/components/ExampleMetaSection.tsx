@@ -30,7 +30,7 @@ const ExampleMetaSection = ({ example, isAuthor }: ExampleMetaSectionProps) => {
     <div className="mb-16">
       <PageHeader {...pageHeaderProps} />
       {isAuthor && <EditDeleteButtons exampleId={example.id} />}
-      <WriterInfo user={example.users} />
+      <WriterInfo author={example.author} />
       <div className="flex items-center justify-between">
         <TagList tags={example.tags || []} />
         <ExampleCardActions

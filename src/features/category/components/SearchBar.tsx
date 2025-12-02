@@ -1,7 +1,8 @@
 import { Search } from 'lucide-react';
 
 import { SearchInput } from '@/components/SearchInput';
-import type { Category } from '@/features/category/data/categories';
+
+import type { Category } from '../types/category';
 
 interface SearchBarProps {
   category: Category;

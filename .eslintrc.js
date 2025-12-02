@@ -30,8 +30,11 @@ module.exports = {
     'prettier',
   ],
   rules: {
-    // import 관련 규칙
+    // import 관련 규칙 ----- 배포 전 삭제
     'import/no-unresolved': 'off',
+    'import/default': 'off',
+    'import/namespace': 'off',
+    'import/no-named-as-default': 'off',
 
     // unused-vars 관련 규칙
     'no-unused-vars': 'off',

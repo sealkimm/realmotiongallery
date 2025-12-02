@@ -7,6 +7,11 @@ export interface Example {
   description: string;
   content: string;
   created_by: string;
+  author: {
+    id: User['id'];
+    nickname: User['nickname'];
+    avatar_url: User['avatar_url'];
+  };
   created_at: string;
   thumbnail: string;
   tags?: string[];
@@ -18,11 +23,6 @@ export interface ExampleWithInteractions extends Example {
   isBookmarked: boolean;
 }
 
-export interface ExampleUser {
-  nickname: User['nickname'];
-  avatar_url: User['avatar_url'];
-}
-
 export interface ExampleLike {
   user_id: string;
 }
@@ -32,7 +32,6 @@ export interface ExampleBookmark {
 }
 
 export interface ExampleWithRelations extends Example {
-  users: ExampleUser;
   likes: ExampleLike[];
   bookmarks: ExampleBookmark[];
 }

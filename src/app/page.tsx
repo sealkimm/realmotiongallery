@@ -14,7 +14,10 @@ const HomePage = async () => {
     { data: examples, error: examplesError },
   ] = await Promise.all([
     supabase.auth.getUser(),
-    supabase.from('examples').select('*').order('created_at'),
+    supabase
+      .from('examples')
+      .select('*, author:users(id,nickname,avatar_url)')
+      .order('created_at'),
   ]);
 
   if (examplesError) throw new Error('예제 목록을 불러오지 못했습니다.');

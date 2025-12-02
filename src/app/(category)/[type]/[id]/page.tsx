@@ -19,8 +19,13 @@ const relatedExamples = [
     title: '관련 Example 1',
     description: 'Example 1 description',
     content: 'Example 1 content',
+    created_by: '123',
+    author: {
+      id: 'asdasd',
+      nickname: 'Example 1 Author',
+      avatar_url: 'https://example.com/avatar.jpg',
+    },
     created_at: '2025-01-01',
-    created_by: 'asdasd',
     thumbnail:
       'https://cdn.crowdpic.net/detail-thumb/thumb_d_DBE010EEE9C899E04B65B2EA8FE046FE.jpg',
     type: 'gsap',
@@ -32,7 +37,12 @@ const relatedExamples = [
     title: '관련 Example 2',
     description: 'Example 2 description',
     content: 'Example 2 content',
-    created_by: 'asdasd',
+    created_by: '123',
+    author: {
+      id: 'asdasd',
+      nickname: 'Example 2 Author',
+      avatar_url: 'https://example.com/avatar.jpg',
+    },
     created_at: '2025-01-02',
     thumbnail:
       'https://cdn.crowdpic.net/detail-thumb/thumb_d_DBE010EEE9C899E04B65B2EA8FE046FE.jpg',
@@ -52,16 +62,15 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
   const { data: example, error: exampleError } = await supabase
     .from('examples')
     .select(
-      `*, users(nickname, avatar_url), likes(user_id), bookmarks(user_id)`,
+      `*, author:users(id, nickname, avatar_url), likes(user_id), bookmarks(user_id)`,
     )
     .eq('id', id)
     .eq('type', type)
-    .order('created_at')
     .single<ExampleFull>();
 
   if (!category || exampleError) throw new Error('예제를 불러오지 못했습니다.');
 
-  const isAuthor = user?.id === example?.created_by;
+  const isAuthor = user?.id === example?.author.id;
 
   const isLiked = example.likes.some(like => like.user_id === user?.id);
   const isBookmarked = example.bookmarks.some(bm => bm.user_id === user?.id);

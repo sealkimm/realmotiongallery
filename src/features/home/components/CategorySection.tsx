@@ -7,7 +7,7 @@ import { ChevronRight } from 'lucide-react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import CardListAnimator from '@/components/animations/CardListAnimator';
 import { Button } from '@/components/ui/button';
-import type { Category } from '@/features/category/data/categories';
+import type { Category } from '@/features/category/types/category';
 import ExampleCard from '@/features/example/components/ExampleCard';
 import type { Example } from '@/features/example/types/example';
 

@@ -3,16 +3,18 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, UserIcon } from 'lucide-react';
 import * as motion from 'motion/react-client';
 
 import { cn } from '@/lib/utils';
 import useExampleInteractions from '@/hooks/useExampleInteractions';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import type { Category } from '@/features/category/types/category';
 import ExampleCardActions from '@/features/example/components/ExampleCardActions';
 import type { Example } from '@/features/example/types/example';
 
 import { Card, CardContent } from '../../../components/ui/card';
+import WriterInfo from './WriterInfo';
 
 interface ExampleCardProps {
   category: Category;
@@ -83,6 +85,7 @@ const ExampleCard = ({
                 {isHorizontal && <ArrowRight size={14} />}
               </p>
             </div>
+            <WriterInfo author={example.author} variant="card" />
             <div className="mt-3 flex items-center justify-between">
               <ExampleCardActions
                 {...interactions}
