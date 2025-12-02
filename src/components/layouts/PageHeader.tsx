@@ -1,6 +1,5 @@
 import { cn } from '@/lib/utils';
 
-import Tag from '../tag/Tag';
 import { Badge } from '../ui/badge';
 
 interface PageHeaderProps {
@@ -8,7 +7,6 @@ interface PageHeaderProps {
   description: string;
   badgeTitle?: string;
   badgeColor?: string;
-  tags?: string[];
   className?: string;
 }
 
@@ -17,7 +15,6 @@ const PageHeader = ({
   description,
   badgeTitle,
   badgeColor,
-  tags,
   className,
 }: PageHeaderProps) => {
   const showBadge = badgeTitle && badgeColor;
@@ -35,13 +32,7 @@ const PageHeader = ({
         </Badge>
       )}
       <h2 className={`mb-4 text-3xl font-bold md:text-5xl`}>{title}</h2>
-      <div className="my-4 flex gap-2">
-        {tags &&
-          tags.map((tag, index) => (
-            <Tag variant="outline" key={index} label={tag} />
-          ))}
-      </div>
-      <p className="mb-8 text-xl text-gray-400">{description}</p>
+      <p className="text-xl text-gray-400">{description}</p>
     </div>
   );
 };

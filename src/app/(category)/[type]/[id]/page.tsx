@@ -1,10 +1,9 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import ContentAnimator from '@/components/animations/ContentAnimator';
 import MarkdownViewer from '@/components/editor/MarkdownViewer';
-import PageHeader from '@/components/layouts/PageHeader';
 import { categories } from '@/features/category/data/categories';
-import EditDeleteButtons from '@/features/example/components/EditDeleteButtons';
 import ExampleCard from '@/features/example/components/ExampleCard';
+import ExampleMetaSection from '@/features/example/components/ExampleMetaSection';
 
 interface ExamplePageProps {
   params: {
@@ -20,6 +19,7 @@ const relatedExamples = [
     description: 'Example 1 description',
     content: 'Example 1 content',
     created_at: '2025-01-01',
+    created_by: 'asdasd',
     thumbnail:
       'https://cdn.crowdpic.net/detail-thumb/thumb_d_DBE010EEE9C899E04B65B2EA8FE046FE.jpg',
     type: 'gsap',
@@ -31,6 +31,7 @@ const relatedExamples = [
     title: '관련 Example 2',
     description: 'Example 2 description',
     content: 'Example 2 content',
+    created_by: 'asdasd',
     created_at: '2025-01-02',
     thumbnail:
       'https://cdn.crowdpic.net/detail-thumb/thumb_d_DBE010EEE9C899E04B65B2EA8FE046FE.jpg',
@@ -49,7 +50,7 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
 
   const { data: example, error: exampleError } = await supabase
     .from('examples')
-    .select('*')
+    .select(`*, users(nickname, avatar_url)`)
     .eq('id', id)
     .eq('type', type)
     .single();
@@ -58,23 +59,12 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
 
   const isAuthor = user?.id === example?.created_by;
 
-  const pageHeaderProps = {
-    title: example.title,
-    description: example.description,
-    badgeTitle: category.title,
-    badgeColor: category.color,
-    tags: example.tags,
-  };
-
   return (
     <div className="pb-20 pt-24">
       <div className="container mx-auto px-4">
         <ContentAnimator>
-          <PageHeader {...pageHeaderProps} />
-          {isAuthor && <EditDeleteButtons exampleId={example.id} />}
-          <div className="mb-10">
-            <MarkdownViewer content={example.content} />
-          </div>
+          <ExampleMetaSection example={example} isAuthor={isAuthor} />
+          <MarkdownViewer content={example.content} />
           {/* 관련 예제(나중에 추가) => 이전, 다음 예제*/}
           <div>
             <h3 className="mb-6 text-2xl font-bold">Related Examples</h3>

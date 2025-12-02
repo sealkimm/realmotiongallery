@@ -19,8 +19,10 @@ const MarkdownViewer = ({ content }: MarkdownViewerProps) => {
   const cleanedContent = removeAllowTransparency(content);
 
   return (
-    <div className="md-viewer-container">
-      <MarkdownPreview source={cleanedContent} />
+    <div className="mb-10">
+      <div className="md-viewer-container">
+        <MarkdownPreview source={cleanedContent} />
+      </div>
     </div>
   );
 };
