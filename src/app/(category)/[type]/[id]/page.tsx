@@ -2,8 +2,9 @@ import { createSupabaseServerClient } from '@/lib/supabase/server';
 import ContentAnimator from '@/components/animations/ContentAnimator';
 import MarkdownViewer from '@/components/editor/MarkdownViewer';
 import { categories } from '@/features/category/data/categories';
-import ExampleCard from '@/features/example/components/ExampleCard';
+import CommentSection from '@/features/comment/components/CommentSection';
 import ExampleMetaSection from '@/features/example/components/ExampleMetaSection';
+import RelatedExampleSection from '@/features/example/components/RelatedExampleSection-del';
 import type { ExampleFull } from '@/features/example/types/example';
 
 interface ExamplePageProps {
@@ -57,6 +58,7 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
   const category = categories.find(c => c.type === type);
 
   const { data: example, error: exampleError } = await supabase
@@ -81,6 +83,15 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
     isBookmarked,
   };
 
+  // //////////////
+  const { data: comments, error: commentsError } = await supabase
+    .from('comments')
+    .select('*, author:users(id, nickname, avatar_url)')
+    .eq('example_id', id)
+    .order('created_at');
+
+  if (commentsError) throw new Error('댓글을 불러오지 못했습니다.');
+
   return (
     <div className="pb-20 pt-24">
       <div className="container mx-auto px-4">
@@ -91,25 +102,11 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
           />
           <MarkdownViewer content={example.content} />
           {/* 관련 예제(나중에 추가) => 이전, 다음 예제*/}
-          <div>
-            <h3 className="mb-6 text-2xl font-bold">Related Examples</h3>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {relatedExamples.map(item => (
-                <ExampleCard
-                  key={item.id}
-                  category={category}
-                  example={item}
-                  layout="horizontal"
-                />
-              ))}
-            </div>
-          </div>
-          <div
-            id="comment"
-            className="h-[500px] w-full border border-green-500"
-          >
-            댓글영역입니다.
-          </div>
+          {/* <RelatedExampleSection
+            examples={relatedExamples}
+            category={category}
+          /> */}
+          <CommentSection exampleId={id} comments={comments} />
         </ContentAnimator>
       </div>
     </div>

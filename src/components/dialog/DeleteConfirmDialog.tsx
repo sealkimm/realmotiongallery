@@ -1,5 +1,3 @@
-import { Trash } from 'lucide-react';
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,36 +7,30 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
 
 interface DeleteConfirmDialogProps {
-  exampleId: string;
-  handleDeleteExample: (exampleId: string) => void;
+  type: 'example' | 'comment';
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  onDelete: () => void;
 }
 
 const DeleteConfirmDialog = ({
-  exampleId,
-  handleDeleteExample,
+  type = 'example',
+  open,
+  setOpen,
+  onDelete,
 }: DeleteConfirmDialogProps) => {
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button
-          variant="destructive"
-          size="sm"
-          className="flex items-center gap-2"
-        >
-          <Trash size={14} />
-          삭제
-        </Button>
-      </AlertDialogTrigger>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent className="border-gray-800 bg-gray-900">
         <AlertDialogHeader>
-          <AlertDialogTitle>삭제하시겠습니까?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {type === 'example' ? '예제' : '댓글'} 삭제
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            삭제 하실 경우 복구가 불가능 합니다.
+            정말로 삭제하시겠습니까?
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -47,9 +39,9 @@ const DeleteConfirmDialog = ({
           </AlertDialogCancel>
           <AlertDialogAction
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            onClick={() => handleDeleteExample(exampleId)}
+            onClick={onDelete}
           >
-            삭제
+            확인
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

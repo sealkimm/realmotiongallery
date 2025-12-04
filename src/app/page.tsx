@@ -57,7 +57,7 @@ const HomePage = async () => {
             <CategorySection
               key={category.id}
               category={category}
-              exampleList={examplesByType[category.type]}
+              examples={examplesByType[category.type]}
             />
           ))}
         </div>

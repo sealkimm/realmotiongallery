@@ -13,10 +13,10 @@ import type { Example } from '@/features/example/types/example';
 
 interface CategorySectionProps {
   category: Category;
-  exampleList: Example[];
+  examples: Example[];
 }
 
-const CategorySection = ({ category, exampleList }: CategorySectionProps) => {
+const CategorySection = ({ category, examples }: CategorySectionProps) => {
   const categorySectionRef = useRef(null);
 
   useGSAP(
@@ -59,7 +59,7 @@ const CategorySection = ({ category, exampleList }: CategorySectionProps) => {
       </div>
       <CardListAnimator direction="left">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {exampleList.map(item => (
+          {examples.map(item => (
             <ExampleCard key={item.id} category={category} example={item} />
           ))}
         </div>
