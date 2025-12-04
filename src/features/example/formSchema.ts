@@ -8,6 +8,8 @@ export const FORM_MESSAGES = {
   SUCCESS_CREATE: '예제 등록이 완료되었습니다.',
   SUCCESS_UPDATE: '예제 수정이 완료되었습니다.',
   ERROR_SAVE: '예제 저장에 실패했습니다.',
+  SUCCESS_DELETE: '예제 삭제가 완료되었습니다.',
+  ERROR_DELETE: '예제 삭제에 실패했습니다.',
 };
 
 export const formSchema = z.object({

@@ -2,12 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Edit, Trash } from 'lucide-react';
-import { toast } from 'sonner';
 
-import { supabase } from '@/lib/supabase/client';
-import useSupabaseRequest from '@/hooks/useSupabaseRequest';
+import useExample from '@/hooks/useExample';
 import DeleteConfirmDialog from '@/components/dialog/DeleteConfirmDialog';
 import { Button } from '@/components/ui/button';
 
@@ -16,30 +13,11 @@ interface EditDeleteButtonsProps {
 }
 
 const EditDeleteButtons = ({ exampleId }: EditDeleteButtonsProps) => {
-  const router = useRouter();
+  const { deleteExample, isLoading } = useExample();
   const [open, setOpen] = useState(false);
 
-  const { execute, isLoading } = useSupabaseRequest({
-    requestFn: async exampleId => {
-      const result = await supabase
-        .from('examples')
-        .delete()
-        .eq('id', exampleId);
-      return result;
-    },
-    onSuccess: () => {
-      // !!!!!!!!!!!!!!!! 예제 삭제됐는지 확인하기
-      toast.success('예제 삭제가 완료되었습니다.');
-      router.back();
-    },
-    onError: error => {
-      console.error('예제 삭제 실패', error);
-      toast.error('예제 삭제에 실패했습니다.');
-    },
-  });
-
-  const handleDeleteExample = () => {
-    execute(exampleId);
+  const handleDelete = () => {
+    deleteExample(exampleId);
   };
 
   return (
@@ -58,6 +36,7 @@ const EditDeleteButtons = ({ exampleId }: EditDeleteButtonsProps) => {
         variant="destructive"
         size="sm"
         onClick={() => setOpen(true)}
+        disabled={isLoading}
         className="flex items-center gap-2"
       >
         <Trash size={14} />
@@ -65,7 +44,7 @@ const EditDeleteButtons = ({ exampleId }: EditDeleteButtonsProps) => {
       </Button>
       <DeleteConfirmDialog
         type="example"
-        onDelete={handleDeleteExample}
+        onDelete={handleDelete}
         open={open}
         setOpen={setOpen}
       />

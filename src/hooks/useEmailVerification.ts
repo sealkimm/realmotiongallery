@@ -1,3 +1,15 @@
+/**
+ * @description 이메일 인증을 위한 커스텀 훅
+ *
+ * @param {UseFormReturn<FormValues>} form - 폼 데이터
+ *
+ * @returns {boolean} isEmailSent - 이메일 전송 여부
+ * @returns {boolean} isVerified - 이메일 인증 여부
+ * @returns {boolean} isCodeSent - 인증번호 전송 여부
+ * @returns {function} sendVerificationCode - 인증번호 전송 함수
+ * @returns {function} verifyEmailCode - 이메일 인증 함수
+ */
+
 'use client';
 
 import { useState } from 'react';

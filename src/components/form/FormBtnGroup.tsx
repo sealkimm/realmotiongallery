@@ -5,10 +5,11 @@ import { Button } from '../ui/button';
 
 interface FormBtnGroupProps {
   isEditMode: boolean;
+  isLoading: boolean;
 }
 
 // 회원가입 페이지와 통일성있게 네이밍하고 위치 옮기기
-const FormBtnGroup = ({ isEditMode }: FormBtnGroupProps) => {
+const FormBtnGroup = ({ isEditMode, isLoading }: FormBtnGroupProps) => {
   const router = useRouter();
 
   const onClickCancel = () => {
@@ -21,10 +22,11 @@ const FormBtnGroup = ({ isEditMode }: FormBtnGroupProps) => {
         variant="outline"
         className="text-md"
         onClick={onClickCancel}
+        disabled={isLoading}
       >
         취소
       </Button>
-      <Button type="submit" className="text-md">
+      <Button type="submit" className="text-md" disabled={isLoading}>
         <Save /> {isEditMode ? '수정하기' : '등록하기'}
       </Button>
     </div>

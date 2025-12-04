@@ -1,3 +1,17 @@
+/**
+ * @description 회원가입 폼을 처리하는 커스텀 훅
+ *
+ * @param {UseSignupFormProps} onSuccess - 회원가입 성공 후 콜백 함수
+ *
+ * @returns {object} form - 폼 상태와 함수
+ * @returns {boolean} isLoading - 로딩 상태
+ * @returns {boolean} isVerified - 이메일 인증 여부(useEmailVerification)
+ * @returns {boolean} isEmailSent - 이메일 전송 여부(useEmailVerification)
+ * @returns {boolean} isCodeSent - 인증코드 전송 여부(useEmailVerification)
+ * @returns {function} sendVerificationCode - 인증코드 전송 함수(useEmailVerification)
+ * @returns {function} verifyEmailCode - 이메일 인증 함수(useEmailVerification)
+ */
+
 'use client';
 
 import { useEffect } from 'react';
@@ -13,7 +27,7 @@ import { createRandomNickname } from '@/features/auth/api/createRandomNickname';
 import { insertUserInfo } from '@/features/auth/api/insertUserInfo';
 import { formSchema, type FormValues } from '@/features/auth/formSchema';
 
-// signupform이랑 중복
+// signupform이랑 타입 중복 정의
 interface UseSignupFormProps {
   onSuccess: () => void;
 }

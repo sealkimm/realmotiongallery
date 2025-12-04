@@ -1,3 +1,15 @@
+/**
+ * @description 예제 상세 페이지에서 사용자 상호작용(좋아요, 북마크)을 처리하는 커스텀 훅
+ *
+ * @param {UseExampleInteractionsProps} example - 예제 데이터
+ *
+ * @returns {function} handleLike - 좋아요 처리 함수
+ * @returns {function} handleBookmark - 북마크 처리 함수
+ * @returns {number} likeCount - 좋아요 수
+ * @returns {boolean} isLiked - 좋아요 여부
+ * @returns {boolean} isBookmarked - 북마크 여부
+ */
+
 'use client';
 
 import { useState } from 'react';
@@ -5,10 +17,10 @@ import { useAuth } from '@/providers/AuthProvider';
 import { toast } from 'sonner';
 
 import { supabase } from '@/lib/supabase/client';
-import type { Example } from '@/features/example/types/example';
+import type { ExampleWithInteractions } from '@/features/example/types/example';
 
 interface UseExampleInteractionsProps {
-  example: Example;
+  example: ExampleWithInteractions;
 }
 
 const useExampleInteractions = ({ example }: UseExampleInteractionsProps) => {
@@ -19,7 +31,7 @@ const useExampleInteractions = ({ example }: UseExampleInteractionsProps) => {
     example.isBookmarked ?? false,
   );
 
-  const handleLike = async e => {
+  const handleLike = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -46,7 +58,7 @@ const useExampleInteractions = ({ example }: UseExampleInteractionsProps) => {
     }
   };
 
-  const handleBookmark = async e => {
+  const handleBookmark = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 

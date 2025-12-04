@@ -1,3 +1,19 @@
+/**
+ * @description 댓글 CRUD 기능을 제공하는 커스텀 훅
+ *
+ * @param {string} exampleId - 댓글이 달린 예제 ID
+ * @param {CommentWithUser[]} initialComments - 초기 댓글 목록
+ * @param {string} [userId] - 현재 로그인한 사용자 ID
+ *
+ * @returns {CommentWithUser[]} comments - 댓글 목록
+ * @returns {boolean} isCreating - 댓글 생성 중 여부
+ * @returns {boolean} isUpdating - 댓글 수정 중 여부
+ * @returns {boolean} isDeleting - 댓글 삭제 중 여부
+ * @returns {function} handleCreateComment - 댓글 생성 함수
+ * @returns {function} handleUpdateComment - 댓글 수정 함수
+ * @returns {function} handleDeleteComment - 댓글 삭제 함수
+ */
+
 'use client';
 
 import { useState } from 'react';
@@ -23,67 +39,67 @@ const useComment = ({
 }: UseCommentProps) => {
   const [comments, setComments] = useState(initialComments);
 
-  const { execute: executeCreateComment, isLoading: isCreating } =
-    useSupabaseRequest<{
-      //타입 분리하기
-      content: string;
-      exampleId: string;
-      userId: string;
-    }>({
-      requestFn: async ({ content, exampleId, userId }) => {
-        const result = await supabase
-          .from('comments')
-          .insert({
-            content,
-            example_id: exampleId,
-            user_id: userId,
-          })
-          .select('*, author:users(id, nickname, avatar_url)')
-          .single();
-        return result;
-      },
-      onSuccess: result => {
-        setComments(prev => [...prev, result]);
-      },
-    });
+  // 생성
+  const { execute: createComment, isLoading: isCreating } = useSupabaseRequest<{
+    //타입 분리하기
+    content: string;
+    exampleId: string;
+    userId: string;
+  }>({
+    requestFn: async ({ content, exampleId, userId }) => {
+      const result = await supabase
+        .from('comments')
+        .insert({
+          content,
+          example_id: exampleId,
+          user_id: userId,
+        })
+        .select('*, author:users(id, nickname, avatar_url)')
+        .single();
+      return result;
+    },
+    onSuccess: result => {
+      setComments(prev => [...prev, result]);
+    },
+  });
 
-  const { execute: executeUpdateComment, isLoading: isUpdating } =
-    useSupabaseRequest({
-      requestFn: async ({ commentId, content }) => {
-        const result = await supabase
-          .from('comments')
-          .update({ content })
-          .eq('id', commentId)
-          .select('*, author:users(id, nickname, avatar_url)')
-          .single();
-        return result;
-      },
-      onSuccess: result => {
-        if (!result) return;
+  // 수정
+  const { execute: updateComment, isLoading: isUpdating } = useSupabaseRequest({
+    requestFn: async ({ commentId, content }) => {
+      const result = await supabase
+        .from('comments')
+        .update({ content })
+        .eq('id', commentId)
+        .select('*, author:users(id, nickname, avatar_url)')
+        .single();
+      return result;
+    },
+    onSuccess: result => {
+      if (!result) return;
 
-        setComments(prev =>
-          prev.map(comment => (comment.id === result.id ? result : comment)),
-        );
-      },
-    });
+      setComments(prev =>
+        prev.map(comment => (comment.id === result.id ? result : comment)),
+      );
+    },
+  });
 
-  const { execute: executeDeleteComment, isLoading: isDeleting } =
-    useSupabaseRequest({
-      requestFn: async ({ commentId }) => {
-        const result = await supabase
-          .from('comments')
-          .delete()
-          .eq('id', commentId)
-          .select()
-          .single();
-        return result;
-      },
-      onSuccess: result => {
-        if (!result) return;
+  // 삭제
+  const { execute: deleteComment, isLoading: isDeleting } = useSupabaseRequest({
+    requestFn: async ({ commentId }) => {
+      const result = await supabase
+        .from('comments')
+        .delete()
+        .eq('id', commentId)
+        .select()
+        .single();
+      return result;
+    },
+    onSuccess: result => {
+      if (!result) return;
 
-        setComments(prev => prev.filter(comment => comment.id !== result.id));
-      },
-    });
+      setComments(prev => prev.filter(comment => comment.id !== result.id));
+    },
+  });
 
   const validateComment = (content: string) => {
     const trimmed = content.trim();
@@ -106,17 +122,17 @@ const useComment = ({
       return;
     }
     if (!validateComment(content)) return;
-    executeCreateComment({ content, exampleId, userId });
+    createComment({ content, exampleId, userId });
   };
 
   const handleUpdateComment = (commentId: string, content: string) => {
     if (!validateComment(content)) return false;
-    executeUpdateComment({ commentId, content });
+    updateComment({ commentId, content });
     return true;
   };
 
   const handleDeleteComment = (commentId: string) => {
-    executeDeleteComment({ commentId });
+    deleteComment({ commentId });
   };
 
   return {

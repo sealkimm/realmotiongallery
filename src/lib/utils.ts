@@ -21,13 +21,33 @@ export const extractThumbnailUrl = (content: string) => {
 
   if (src.includes('codepen.io')) {
     const parts = src.match(/codepen\.io\/([^/]+)\/embed\/([^?]+)/);
-    return `https://shots.codepen.io/${parts[1]}/pen/${parts[2]}-1280.jpg`;
+    return `https://shots.codepen.io/${parts?.[1]}/pen/${parts?.[2]}-1280.jpg`;
   }
 
   if (src.includes('codesandbox.io')) {
     const parts = src.match(/codesandbox\.io\/embed\/([^?/]+)/);
-    return `https://codesandbox.io/api/v1/sandboxes/${parts[1]}/screenshot.png`;
+    return `https://codesandbox.io/api/v1/sandboxes/${parts?.[1]}/screenshot.png`;
   }
 
   return '/default-thumbnail.png';
+};
+
+// 날짜 포맷팅
+export const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const formattedDate = date.toLocaleDateString();
+
+  const diffMs = now.getTime() - date.getTime();
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffyDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffyDays < 1) {
+    return `${diffHours}시간 전`;
+  }
+
+  if (diffyDays < 7) {
+    return `${diffyDays}일 전`;
+  }
+  return formattedDate;
 };

@@ -1,3 +1,14 @@
+/**!!!!!!!!!!!!!!!!!!!!!다시다시닷디사시
+ * @description Supabase API 요청을 처리하는 커스텀 훅
+ *
+ * @param {useSupabaseRequestProps<TVars, TResult>} props - 요청 함수, 성공 콜백, 실패 콜백
+ *
+ * @returns {object} execute - 요청 함수
+ * @returns {boolean} isLoading - 로딩 상태
+ * @returns {TResult | null} data - 응답 데이터
+ * @returns {PostgrestError | Error | null} error - 에러 객체
+ */
+
 'use client';
 
 //!!!!!!!!!!!! 이해하기 중용한 부분임!!!!!!!

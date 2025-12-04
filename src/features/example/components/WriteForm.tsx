@@ -5,11 +5,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Tag as TagIcon, X } from 'lucide-react';
 import { motion } from 'motion/react';
-import { toast } from 'sonner';
 
-import { supabase } from '@/lib/supabase/client';
-import { extractThumbnailUrl } from '@/lib/utils';
-import useSupabaseRequest from '@/hooks/useSupabaseRequest';
+import useExample from '@/hooks/useExample';
 import useTags from '@/hooks/useTags';
 import MarkdownEditor from '@/components/editor/MarkdownEditor';
 import FormBtnGroup from '@/components/form/FormBtnGroup';
@@ -35,7 +32,7 @@ import { categories } from '@/features/category/data/categories';
 import type { Example } from '@/features/example/types/example';
 
 import Tag from '../../../components/tag/Tag';
-import { FORM_MESSAGES, formSchema, type FormValues } from '../formSchema';
+import { formSchema, type FormValues } from '../formSchema';
 
 interface WriteFormProps {
   exampleData?: Example;
@@ -52,6 +49,7 @@ const DEFAULT_FORM_VALUES = {
 // form 로그인페이지하고 비교하기
 const WriteForm = ({ exampleData }: WriteFormProps) => {
   const { tags, removeTag, handleKeyDown } = useTags(exampleData?.tags ?? []);
+  const { createExample, updateExample, isLoading } = useExample();
   const isEditMode = Boolean(exampleData);
 
   const form = useForm<FormValues>({
@@ -59,41 +57,17 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
     defaultValues: exampleData || DEFAULT_FORM_VALUES,
   });
 
-  // 분리하는게 나을까...
-  const { execute, isLoading } = useSupabaseRequest<FormValues>({
-    requestFn: async formData => {
-      if (isEditMode && exampleData) {
-        return await supabase
-          .from('examples')
-          .update(formData)
-          .eq('id', exampleData.id);
-      } else {
-        return await supabase.from('examples').insert(formData);
-      }
-    },
-    onSuccess: () => {
-      toast.success(
-        isEditMode
-          ? FORM_MESSAGES.SUCCESS_UPDATE
-          : FORM_MESSAGES.SUCCESS_CREATE,
-      );
-    },
-    onError: error => {
-      console.error('예제 저장 실패', error);
-      toast.error(FORM_MESSAGES.ERROR_SAVE);
-    },
-  });
-
   const onSubmit = async (data: FormValues) => {
-    const thumbnailUrl = extractThumbnailUrl(data.content);
-
     const formData = {
       ...data,
-      thumbnail: thumbnailUrl,
       tags,
     };
 
-    execute(formData);
+    if (isEditMode && exampleData) {
+      updateExample({ ...formData, id: exampleData.id });
+    } else {
+      createExample(formData);
+    }
   };
 
   useEffect(() => {
@@ -228,7 +202,7 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
               </div>
             </FormSection>
           </div>
-          <FormBtnGroup isEditMode={isEditMode} />
+          <FormBtnGroup isEditMode={isEditMode} isLoading={isLoading} />
         </form>
       </Form>
     </motion.div>

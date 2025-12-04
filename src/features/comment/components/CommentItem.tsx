@@ -9,6 +9,7 @@ import {
   UserIcon,
 } from 'lucide-react';
 
+import { formatDate } from '@/lib/utils';
 import DeleteConfirmDialog from '@/components/dialog/DeleteConfirmDialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -72,7 +73,7 @@ const CommentItem = ({
             </span>
             <span className="text-xs text-gray-500">•</span>
             <span className="text-xs text-gray-500">
-              {new Date(comment.created_at).toLocaleDateString()}
+              {formatDate(comment.created_at)}
             </span>
           </div>
           {isAuthor && (

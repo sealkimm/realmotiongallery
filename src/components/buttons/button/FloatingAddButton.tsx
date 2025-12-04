@@ -1,12 +1,27 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/providers/AuthProvider';
 import { Plus } from 'lucide-react';
 import { motion } from 'motion/react';
+import { toast } from 'sonner';
 
 import { Button } from '../../ui/button';
 
 const FloatingAddButton = () => {
+  const { user } = useAuth();
+  const router = useRouter();
+
+  const handleClick = () => {
+    if (!user) {
+      toast.error('로그인이 필요합니다.');
+      router.push('/auth/login');
+      return;
+    }
+    router.push('/write');
+  };
+
   return (
     <div className="fixed bottom-8 right-8 z-50">
       <motion.div
@@ -16,10 +31,11 @@ const FloatingAddButton = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >
-        <Button asChild className="gradient-background h-14 w-14 rounded-full">
-          <Link href="/write">
-            <Plus size={24} />
-          </Link>
+        <Button
+          onClick={handleClick}
+          className="gradient-background h-14 w-14 rounded-full"
+        >
+          <Plus size={24} />
         </Button>
       </motion.div>
     </div>

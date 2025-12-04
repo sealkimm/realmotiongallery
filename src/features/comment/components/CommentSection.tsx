@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useAuth } from '@/providers/AuthProvider';
 import { MessageCircle } from 'lucide-react';
 
@@ -22,7 +21,6 @@ const CommentSection = ({
   comments: initialComments,
 }: CommentSectionProps) => {
   const { user } = useAuth();
-  // const [content, setContent] = useState('');
 
   const {
     comments,
@@ -38,13 +36,6 @@ const CommentSection = ({
     userId: user?.id,
   });
 
-  //리팩토링
-  //handleSubmit도 props로 하는데 왜 다른 handle이랑 다르게 여기서 하나?
-  // const handleSubmit = () => {
-  //   handleCreateComment(content);
-  //   setContent('');
-  // };
-
   return (
     <div id="comment" className="border-t border-gray-800 pt-10">
       {/* 타이틀 */}
@@ -52,12 +43,7 @@ const CommentSection = ({
         <MessageCircle /> 댓글 {comments.length}개
       </h3>
       {/* 댓글 작성 */}
-      <CommentForm
-        // content={content}
-        // setContent={setContent}
-        onSubmit={handleCreateComment}
-        isLoading={isCreating}
-      />
+      <CommentForm onSubmit={handleCreateComment} isLoading={isCreating} />
       {/* 댓글 목록 */}
       <div className="flex flex-col gap-4">
         {comments.map(comment => (
