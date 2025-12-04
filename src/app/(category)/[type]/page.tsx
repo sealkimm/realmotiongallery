@@ -4,6 +4,7 @@ import PageHeader from '@/components/layouts/PageHeader';
 import SearchBar from '@/features/category/components/SearchBar';
 import { categories } from '@/features/category/data/categories';
 import ExampleCard from '@/features/example/components/ExampleCard';
+import type { UserRelation } from '@/features/example/types/example';
 
 interface CategoryPageProps {
   params: { type: string };
@@ -12,13 +13,36 @@ interface CategoryPageProps {
 const CategoryPage = async ({ params }: CategoryPageProps) => {
   const { type } = await params;
   const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   const category = categories.find(c => c.type === type);
 
   const { data: examples, error: examplesError } = await supabase
     .from('examples')
-    .select('*')
+    .select(
+      '*, users(id,nickname,avatar_url), comments(count),likes(count), user_like:likes!left(user_id), user_bookmark:bookmarks!left(user_id)',
+    )
     .eq('type', type)
-    .order('created_at');
+    .order('created_at')
+    .then(({ data, error }) => ({
+      data:
+        data?.map(
+          ({ users, comments, likes, user_like, user_bookmark, ...item }) => ({
+            ...item,
+            author: users,
+            commentCount: comments[0].count,
+            likeCount: likes[0].count,
+            isLiked: user_like.some(
+              (i: UserRelation) => i.user_id === user?.id,
+            ),
+            isBookmarked: user_bookmark.some(
+              (i: UserRelation) => i.user_id === user?.id,
+            ),
+          }),
+        ) || [],
+      error,
+    }));
 
   if (!category || examplesError)
     throw new Error('예제 목록을 불러오지 못했습니다.');

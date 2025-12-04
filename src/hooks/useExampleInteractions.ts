@@ -17,15 +17,15 @@ import { useAuth } from '@/providers/AuthProvider';
 import { toast } from 'sonner';
 
 import { supabase } from '@/lib/supabase/client';
-import type { ExampleWithInteractions } from '@/features/example/types/example';
+import type { ExampleDetails } from '@/features/example/types/example';
 
 interface UseExampleInteractionsProps {
-  example: ExampleWithInteractions;
+  example: ExampleDetails;
 }
 
 const useExampleInteractions = ({ example }: UseExampleInteractionsProps) => {
   const { user } = useAuth();
-  const [likeCount, setLikeCount] = useState(example.like_count);
+  const [likeCount, setLikeCount] = useState(example.likeCount);
   const [isLiked, setIsLiked] = useState(example.isLiked ?? false);
   const [isBookmarked, setIsBookmarked] = useState(
     example.isBookmarked ?? false,

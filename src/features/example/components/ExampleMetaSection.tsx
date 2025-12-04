@@ -7,11 +7,11 @@ import EditDeleteButtons from '@/features/example/components/EditDeleteButtons';
 import ExampleCardActions from '@/features/example/components/ExampleCardActions';
 import WriterInfo from '@/features/example/components/WriterInfo';
 
-import type { ExampleWithRelations } from '../types/example';
+import type { ExampleDetails } from '../types/example';
 import TagList from './TagList';
 
 interface ExampleMetaSectionProps {
-  example: ExampleWithRelations;
+  example: ExampleDetails;
   isAuthor: boolean;
 }
 

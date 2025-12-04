@@ -5,7 +5,7 @@ import { categories } from '@/features/category/data/categories';
 import CommentSection from '@/features/comment/components/CommentSection';
 import ExampleMetaSection from '@/features/example/components/ExampleMetaSection';
 import RelatedExampleSection from '@/features/example/components/RelatedExampleSection-del';
-import type { ExampleFull } from '@/features/example/types/example';
+import type { UserRelation } from '@/features/example/types/example';
 
 interface ExamplePageProps {
   params: {
@@ -30,7 +30,7 @@ const relatedExamples = [
     thumbnail:
       'https://cdn.crowdpic.net/detail-thumb/thumb_d_DBE010EEE9C899E04B65B2EA8FE046FE.jpg',
     type: 'gsap',
-    like_count: 0,
+    // like_count: 0,
   },
 
   {
@@ -48,7 +48,7 @@ const relatedExamples = [
     thumbnail:
       'https://cdn.crowdpic.net/detail-thumb/thumb_d_DBE010EEE9C899E04B65B2EA8FE046FE.jpg',
     type: 'gsap',
-    like_count: 0,
+    // like_count: 0,
   },
 ];
 
@@ -64,24 +64,25 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
   const { data: example, error: exampleError } = await supabase
     .from('examples')
     .select(
-      `*, author:users(id, nickname, avatar_url), likes(user_id), bookmarks(user_id)`,
+      `*, author:users(id, nickname, avatar_url), likes!left(user_id), bookmarks!left(user_id)`,
     )
     .eq('id', id)
     .eq('type', type)
-    .single<ExampleFull>();
+    .single()
+    .then(({ data, error }) => ({
+      data: {
+        ...data,
+        isLiked: data.likes.some((i: UserRelation) => i.user_id === user?.id),
+        isBookmarked: data.bookmarks.some(
+          (i: UserRelation) => i.user_id === user?.id,
+        ),
+      },
+      error,
+    }));
 
   if (!category || exampleError) throw new Error('예제를 불러오지 못했습니다.');
 
   const isAuthor = user?.id === example?.author.id;
-
-  const isLiked = example.likes.some(like => like.user_id === user?.id);
-  const isBookmarked = example.bookmarks.some(bm => bm.user_id === user?.id);
-
-  const exampleWithInteractions = {
-    ...example,
-    isLiked,
-    isBookmarked,
-  };
 
   // //////////////
   const { data: comments, error: commentsError } = await supabase
@@ -96,10 +97,7 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
     <div className="pb-20 pt-24">
       <div className="container mx-auto px-4">
         <ContentAnimator>
-          <ExampleMetaSection
-            example={exampleWithInteractions}
-            isAuthor={isAuthor}
-          />
+          <ExampleMetaSection example={example} isAuthor={isAuthor} />
           <MarkdownViewer content={example.content} />
           {/* 관련 예제(나중에 추가) => 이전, 다음 예제*/}
           {/* <RelatedExampleSection

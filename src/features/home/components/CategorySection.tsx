@@ -9,11 +9,11 @@ import CardListAnimator from '@/components/animations/CardListAnimator';
 import { Button } from '@/components/ui/button';
 import type { Category } from '@/features/category/types/category';
 import ExampleCard from '@/features/example/components/ExampleCard';
-import type { Example } from '@/features/example/types/example';
+import type { ExampleDetails } from '@/features/example/types/example';
 
 interface CategorySectionProps {
   category: Category;
-  examples: Example[];
+  examples: ExampleDetails[];
 }
 
 const CategorySection = ({ category, examples }: CategorySectionProps) => {

@@ -9,7 +9,7 @@ import * as motion from 'motion/react-client';
 import useExampleInteractions from '@/hooks/useExampleInteractions';
 import type { Category } from '@/features/category/types/category';
 import ExampleCardActions from '@/features/example/components/ExampleCardActions';
-import type { Example } from '@/features/example/types/example';
+import type { ExampleDetails } from '@/features/example/types/example';
 
 import { Card, CardContent } from '../../../components/ui/card';
 import { getCardStyles } from './ExampleCard.styles';
@@ -17,7 +17,7 @@ import WriterInfo from './WriterInfo';
 
 interface ExampleCardProps {
   category: Category;
-  example: Example;
+  example: ExampleDetails;
   layout?: 'horizontal' | 'vertical';
 }
 
@@ -73,6 +73,7 @@ const ExampleCard = ({
                 <div className="mt-3 flex items-center justify-between">
                   <ExampleCardActions
                     {...interactions}
+                    commentCount={example.commentCount}
                     handleComment={handleComment}
                   />
                   <div className={category.textColor}>

@@ -5,16 +5,19 @@ interface ExampleCardActionsProps {
   handleLike: MouseEventHandler<HTMLButtonElement>;
   handleBookmark: MouseEventHandler<HTMLButtonElement>;
   handleComment?: MouseEventHandler<HTMLButtonElement>;
+  commentCount: number;
   likeCount: number;
   isLiked: boolean;
   isBookmarked: boolean;
   showComment?: boolean;
   iconSize?: number;
 }
+
 const ExampleCardActions = ({
   handleLike,
   handleBookmark,
   handleComment,
+  commentCount,
   likeCount,
   isLiked,
   isBookmarked,
@@ -41,7 +44,7 @@ const ExampleCardActions = ({
           className="flex items-center gap-1 p-1 text-gray-400 transition-colors hover:text-blue-500"
         >
           <MessageCircle size={iconSize} />
-          <span className="text-sm">24</span>
+          <span className="text-sm">{commentCount}</span>
         </button>
       )}
       <button
