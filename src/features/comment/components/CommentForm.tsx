@@ -12,6 +12,8 @@ interface CommentFormProps {
   onCancel?: () => void;
   isLoading: boolean;
   isEditMode?: boolean;
+  isReply?: boolean;
+  className?: string;
 }
 
 const CommentForm = ({
@@ -20,8 +22,11 @@ const CommentForm = ({
   onCancel,
   isLoading,
   isEditMode,
+  isReply,
+  className,
 }: CommentFormProps) => {
   const [content, setContent] = useState(initialContent);
+  const buttonLabel = `${isReply ? '답글' : '댓글'} ${isEditMode ? '수정' : '등록'}`;
 
   const handleSubmit = () => {
     onSubmit(content);
@@ -31,9 +36,9 @@ const CommentForm = ({
   };
 
   return (
-    <div className="relative mb-8 flex flex-col gap-3">
+    <div className={cn('relative mb-8 flex flex-col gap-3', className)}>
       <Textarea
-        placeholder="댓글을 입력해주세요"
+        placeholder={`${isReply ? '답글' : '댓글'}을 입력해주세요`}
         value={content}
         onChange={e => setContent(e.target.value)}
         className="resize-none"
@@ -42,20 +47,21 @@ const CommentForm = ({
         className={cn(
           'flex justify-end',
           isEditMode && 'absolute bottom-2 right-2 gap-2',
+          isReply && 'bottom-2 right-2 gap-2',
         )}
       >
-        {isEditMode && (
+        {(isEditMode || isReply) && (
           <Button size="xs" variant="outline" onClick={onCancel}>
             취소
           </Button>
         )}
         <Button
-          size={isEditMode ? 'xs' : 'sm'}
+          size={isEditMode || isReply ? 'xs' : 'sm'}
           className={cn(!isEditMode && 'gradient-background')}
           onClick={handleSubmit}
           disabled={!content || isLoading}
         >
-          {isEditMode ? '댓글 수정' : '댓글 등록'}
+          {buttonLabel}
         </Button>
       </div>
     </div>

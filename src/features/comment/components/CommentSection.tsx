@@ -13,9 +13,7 @@ interface CommentSectionProps {
   exampleId: string;
   comments: CommentWithUser[];
 }
-
 //// onchnage 한글자 적을때마다 콘솔 나옴 -> 성능에 적합한 방법 찾기
-
 const CommentSection = ({
   exampleId,
   comments: initialComments,
@@ -36,23 +34,29 @@ const CommentSection = ({
     userId: user?.id,
   });
 
+  const parentComments = comments.filter(comment => !comment.parent_id);
+
+  const getReplies = (parentId: string) => {
+    return comments.filter(comment => comment.parent_id === parentId);
+  };
+
   return (
     <div id="comment" className="border-t border-gray-800 pt-10">
-      {/* 타이틀 */}
       <h3 className="mb-6 flex items-center gap-3 text-2xl font-bold">
         <MessageCircle /> 댓글 {comments.length}개
       </h3>
-      {/* 댓글 작성 */}
       <CommentForm onSubmit={handleCreateComment} isLoading={isCreating} />
-      {/* 댓글 목록 */}
       <div className="flex flex-col gap-4">
-        {comments.map(comment => (
+        {parentComments.map(comment => (
           <CommentItem
             key={comment.id}
             comment={comment}
             userId={user?.id}
+            replies={getReplies(comment.id)}
+            onCreate={handleCreateComment}
             onUpdate={handleUpdateComment}
             onDelete={handleDeleteComment}
+            isCreating={isCreating}
             isUpdating={isUpdating}
             isDeleting={isDeleting}
           />

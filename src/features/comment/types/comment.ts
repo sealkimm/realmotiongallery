@@ -5,7 +5,9 @@ export interface Comment {
   content: string;
   example_id: string;
   user_id: string;
+  parent_id?: string;
   created_at: string;
+  replies?: CommentWithUser[];
 }
 
 export interface CommentWithUser extends Comment {

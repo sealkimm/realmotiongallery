@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import {
+  ChevronDown,
   Edit,
   MessageCircle,
   MoreVertical,
@@ -26,8 +27,11 @@ import CommentForm from './CommentForm';
 interface CommentItemProps {
   comment: CommentWithUser;
   userId?: string;
+  replies?: CommentWithUser[];
+  onCreate?: (content: string, parentId: string) => void;
   onUpdate: (commentId: string, content: string) => boolean;
   onDelete: (commentId: string) => void;
+  isCreating?: boolean;
   isUpdating: boolean;
   isDeleting: boolean;
 }
@@ -35,14 +39,21 @@ interface CommentItemProps {
 const CommentItem = ({
   comment,
   userId,
+  replies = [],
+  onCreate,
   onUpdate,
   onDelete,
+  isCreating,
   isUpdating,
   isDeleting,
 }: CommentItemProps) => {
   const isAuthor = comment.author.id === userId;
-  const [isEditMode, setIsEditMode] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [isReplyMode, setIsReplyMode] = useState(false);
+  const [showReplies, setShowReplies] = useState(false);
+  const hasReplies = replies.length > 0;
+  const isReply = !!comment.parent_id;
 
   const handleUpdate = (content: string) => {
     const success = onUpdate(comment.id, content);
@@ -52,6 +63,13 @@ const CommentItem = ({
 
   const handleDelete = () => {
     onDelete(comment.id);
+  };
+
+  const handleReply = (content: string) => {
+    if (onCreate) {
+      onCreate(content, comment.id);
+      setIsReplyMode(false);
+    }
   };
 
   return (
@@ -115,30 +133,64 @@ const CommentItem = ({
             onCancel={() => setIsEditMode(false)}
             isLoading={isUpdating}
             isEditMode={isEditMode}
+            isReply={isReply}
           />
         ) : (
           <>
             <p className="mb-2 text-sm text-gray-300">{comment.content}</p>
-            <div className="flex items-center gap-3">
-              <Button
-                variant="ghost"
-                className="hover:text-gray-white text-xs text-gray-400"
-              >
-                <MessageCircle size={14} className="mr-1" />
-                Reply
-              </Button>
-              {/* 답글 있는 경우 보여주도록 ,,,,,,영어 한글로 바꾸기*/}
-              <Button
-                variant="ghost"
-                className="hover:text-gray-white text-xs text-gray-400"
-              >
-                View 20009405 replies
-              </Button>
-            </div>
+            {!isReply && (
+              <div className="flex items-center gap-3">
+                <Button
+                  variant="ghost"
+                  size="xs"
+                  onClick={() => {
+                    setIsReplyMode(!isReplyMode);
+                  }}
+                  className="hover:text-gray-white text-xs text-gray-400"
+                >
+                  <MessageCircle size={14} className="mr-1" />
+                  답글
+                </Button>
+                {hasReplies && (
+                  <Button
+                    variant="ghost"
+                    size="xs"
+                    onClick={() => {
+                      setShowReplies(!showReplies);
+                    }}
+                    className="hover:text-gray-white text-xs text-gray-400"
+                  >
+                    <ChevronDown size={14} /> 답글 {replies.length}개
+                  </Button>
+                )}
+              </div>
+            )}
           </>
         )}
-
-        {/* <div>답급 버튼</div> */}
+        {isReplyMode && (
+          <CommentForm
+            onSubmit={handleReply}
+            onCancel={() => setIsReplyMode(false)}
+            isReply={true}
+            isLoading={isCreating || false}
+            className="mb-0 mt-3"
+          />
+        )}
+        {showReplies && hasReplies && (
+          <div className="ml-12 mt-4 flex flex-col gap-4">
+            {replies.map(reply => (
+              <CommentItem
+                key={reply.id}
+                comment={reply}
+                userId={userId}
+                onUpdate={onUpdate}
+                onDelete={onDelete}
+                isUpdating={isUpdating}
+                isDeleting={isDeleting}
+              />
+            ))}
+          </div>
+        )}
       </div>
       {/* 글작성 삭제는 해당 ui가 버튼 그룹에 있음.. 맞나?? 위치 둘 다 확인하기 */}
       <DeleteConfirmDialog

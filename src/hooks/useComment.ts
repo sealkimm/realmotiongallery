@@ -40,19 +40,15 @@ const useComment = ({
   const [comments, setComments] = useState(initialComments);
 
   // 생성
-  const { execute: createComment, isLoading: isCreating } = useSupabaseRequest<{
-    //타입 분리하기
-    content: string;
-    exampleId: string;
-    userId: string;
-  }>({
-    requestFn: async ({ content, exampleId, userId }) => {
+  const { execute: createComment, isLoading: isCreating } = useSupabaseRequest({
+    requestFn: async ({ content, exampleId, userId, parentId }) => {
       const result = await supabase
         .from('comments')
         .insert({
           content,
           example_id: exampleId,
           user_id: userId,
+          parent_id: parentId || null,
         })
         .select('*, author:users(id, nickname, avatar_url)')
         .single();
@@ -116,13 +112,13 @@ const useComment = ({
     return true;
   };
 
-  const handleCreateComment = (content: string) => {
+  const handleCreateComment = (content: string, parentId?: string) => {
     if (!userId) {
       toast.error('로그인 후 댓글을 작성할 수 있습니다.');
       return;
     }
     if (!validateComment(content)) return;
-    createComment({ content, exampleId, userId });
+    createComment({ content, exampleId, userId, parentId });
   };
 
   const handleUpdateComment = (commentId: string, content: string) => {
