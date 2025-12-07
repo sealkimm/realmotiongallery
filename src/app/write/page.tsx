@@ -3,14 +3,14 @@ import PageHeader from '@/components/layouts/PageHeader';
 import WriteForm from '@/features/example/components/WriteForm';
 
 interface WritePageProps {
-  searchParams: {
-    id?: string;
-  };
+  searchParams: Promise<{
+    id: string;
+  }>;
 }
 // 리팩토링
 const WritePage = async ({ searchParams }: WritePageProps) => {
+  const { id: exampleId } = await searchParams;
   const supabase = await createSupabaseServerClient();
-  const { id: exampleId } = searchParams;
 
   let exampleData = null;
 

@@ -10,7 +10,6 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/providers/AuthProvider';
 import { toast } from 'sonner';
 
 import { supabase } from '@/lib/supabase/client';
@@ -24,19 +23,17 @@ interface UpdateExampleData extends FormValues {
 }
 
 const useExample = () => {
-  const { user } = useAuth(); ////위치 여기가 맞나, writeform이 맞나
   const router = useRouter();
 
   // 생성
   const { execute: createExample, isLoading: isCreating } =
     useSupabaseRequest<FormValues>({
       requestFn: async data => {
-        // 썸네일 url 없다면...기본 이미지 처리!
         const thumbnail = extractThumbnailUrl(data.content);
 
         return await supabase
           .from('examples')
-          .insert({ ...data, thumbnail, created_by: user?.id })
+          .insert({ ...data, thumbnail })
           .select('*, author:users(id, nickname, avatar_url)')
           .single();
       },
@@ -60,7 +57,7 @@ const useExample = () => {
 
         return await supabase
           .from('examples')
-          .update({ ...updateData, thumbnail, created_by: user?.id })
+          .update({ ...updateData, thumbnail })
           .eq('id', id)
           .select('*, author:users(id, nickname, avatar_url)')
           .single();

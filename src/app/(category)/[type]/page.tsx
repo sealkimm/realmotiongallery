@@ -9,7 +9,6 @@ import type { UserRelation } from '@/features/example/types/example';
 interface CategoryPageProps {
   params: { type: string };
 }
-
 const CategoryPage = async ({ params }: CategoryPageProps) => {
   const { type } = await params;
   const supabase = await createSupabaseServerClient();
@@ -43,9 +42,11 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
         ) || [],
       error,
     }));
+  /////>>>????????
+  if (!category) throw new Error('카테고리를 찾을 수 없습니다.', category);
 
-  if (!category || examplesError)
-    throw new Error('예제 목록을 불러오지 못했습니다.');
+  if (examplesError)
+    throw new Error('예제 목록을 불러오지 못했습니다.', examplesError);
 
   const pageHeaderProps = {
     title: `${category.title} Animations`,
