@@ -24,58 +24,55 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchDBUser = async (authUserId: string) => {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('users')
       .select('*')
       .eq('id', authUserId)
       .single();
 
+    if (error) {
+      console.error('[AuthProvider] fetchDBUser 에러', error);
+      return null;
+    }
     return data;
   };
 
   useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user: authUser },
-      } = await supabase.auth.getUser();
+    let mounted = true;
 
-      if (!authUser) {
+    const loadUser = async () => {
+      const { data } = await supabase.auth.getSession();
+
+      if (!mounted) return;
+
+      if (data.session?.user) {
+        const dbUser = await fetchDBUser(data.session.user.id);
+        if (mounted) setUser(dbUser);
+      } else {
         setUser(null);
-        setIsLoading(false);
-        return;
       }
 
-      const dbUser = await fetchDBUser(authUser.id);
-      setUser(dbUser);
       setIsLoading(false);
     };
-    getUser();
+
+    loadUser();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      if (!session?.user) {
-        setUser(null);
-        setIsLoading(false);
-        return;
-      }
-
-      const dbUser = await fetchDBUser(session.user.id);
-      setUser(dbUser);
-      setIsLoading(false);
+    } = supabase.auth.onAuthStateChange(() => {
+      loadUser();
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signOut = async () => {
-    console.log('signOut');
     await supabase.auth.signOut();
     setUser(null);
-    router.refresh();
-    // router.push('/');
-    // setUser(null);
-    // setIsLoading(false);
+    router.replace('/auth/login');
   };
 
   return (

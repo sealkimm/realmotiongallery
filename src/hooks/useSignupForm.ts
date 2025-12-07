@@ -24,7 +24,6 @@ import useEmailVerification from '@/hooks/useEmailVerification';
 import useSupabaseRequest from '@/hooks/useSupabaseRequest';
 import { checkUserExists } from '@/features/auth/api/checkUserExists';
 import { createRandomNickname } from '@/features/auth/api/createRandomNickname';
-import { insertUserInfo } from '@/features/auth/api/insertUserInfo';
 import { formSchema, type FormValues } from '@/features/auth/formSchema';
 
 // signupform이랑 타입 중복 정의
@@ -68,8 +67,6 @@ const useSignupForm = ({ onSuccess }: UseSignupFormProps) => {
     },
     onSuccess: async ({ user }) => {
       if (user) {
-        await insertUserInfo(user);
-
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email: user.email!,
           password: form.getValues('password'),

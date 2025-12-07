@@ -57,7 +57,7 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
     defaultValues: exampleData || DEFAULT_FORM_VALUES,
   });
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = (data: FormValues) => {
     const formData = {
       ...data,
       tags,

@@ -15,6 +15,7 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
   const category = categories.find(c => c.type === type);
 
   const { data: examples, error: examplesError } = await supabase
@@ -42,11 +43,16 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
         ) || [],
       error,
     }));
-  /////>>>????????
-  if (!category) throw new Error('카테고리를 찾을 수 없습니다.', category);
 
-  if (examplesError)
-    throw new Error('예제 목록을 불러오지 못했습니다.', examplesError);
+  if (!category) {
+    throw new Error(`카테고리를 찾을 수 없습니다: ${type}`);
+  }
+
+  if (examplesError) {
+    throw new Error(
+      `예제 목록을 불러오지 못했습니다: ${examplesError.message}`,
+    );
+  }
 
   const pageHeaderProps = {
     title: `${category.title} Animations`,

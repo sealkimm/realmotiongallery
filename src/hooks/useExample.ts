@@ -10,6 +10,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/providers/AuthProvider';
 import { toast } from 'sonner';
 
 import { supabase } from '@/lib/supabase/client';
@@ -23,6 +24,7 @@ interface UpdateExampleData extends FormValues {
 }
 
 const useExample = () => {
+  const { user } = useAuth();
   const router = useRouter();
 
   // 생성
@@ -33,7 +35,7 @@ const useExample = () => {
 
         return await supabase
           .from('examples')
-          .insert({ ...data, thumbnail })
+          .insert({ ...data, thumbnail, created_by: user?.id })
           .select('*, author:users(id, nickname, avatar_url)')
           .single();
       },
@@ -52,8 +54,7 @@ const useExample = () => {
     useSupabaseRequest<UpdateExampleData>({
       requestFn: async data => {
         const { id, ...updateData } = data;
-        const thumbnail = extractThumbnailUrl(data.content);
-        // const thumbnailUrl = extractThumbnailUrl(updateData.content);
+        const thumbnail = extractThumbnailUrl(updateData.content);
 
         return await supabase
           .from('examples')
