@@ -28,13 +28,13 @@ const AuthButtons = ({ isAuthenticated }: AuthButtonsProps) => {
         variant="secondary"
         className="bg-purple-500/20 text-white hover:bg-purple-500/30"
       >
-        <Link href="/auth/login" className="flex items-center gap-4">
+        <Link href="/login" className="flex items-center gap-4">
           <LogIn />
           <span>로그인</span>
         </Link>
       </Button>
       <Button asChild className="gradient-background ml-4">
-        <Link href="/auth/signup" className="flex items-center gap-4">
+        <Link href="/signup" className="flex items-center gap-4">
           <UserPlus2 />
           <span>회원가입</span>
         </Link>

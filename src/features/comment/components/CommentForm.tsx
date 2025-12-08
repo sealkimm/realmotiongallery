@@ -59,7 +59,7 @@ const CommentForm = ({
           size={isEditMode || isReply ? 'xs' : 'sm'}
           className={cn(!isEditMode && 'gradient-background')}
           onClick={handleSubmit}
-          disabled={!content || isLoading}
+          disabled={isLoading}
         >
           {buttonLabel}
         </Button>

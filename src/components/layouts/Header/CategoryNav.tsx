@@ -6,23 +6,27 @@ import { categories } from '@/features/category/data/categories';
 
 interface CategoryNavProps {
   activeCategory: string;
-  setActiveCategory: (category: string) => void;
 }
 
-const CategoryNav = ({
-  activeCategory,
-  setActiveCategory,
-}: CategoryNavProps) => {
+const CategoryNav = ({ activeCategory }: CategoryNavProps) => {
   return (
     <nav className="mr-8 flex gap-8">
+      <Button
+        asChild
+        variant="ghost"
+        className={cn(
+          'transition-colors',
+          'hover:text-foreground',
+          activeCategory === 'all' ? 'text-foreground' : 'text-gray-500',
+        )}
+      >
+        <Link href={`/`}>All</Link>
+      </Button>
       {categories.map(category => (
         <Button
+          asChild
           key={category.type}
           variant="ghost"
-          asChild
-          onClick={() => {
-            setActiveCategory(category.type);
-          }}
           className={cn(
             'transition-colors',
             'hover:text-foreground',

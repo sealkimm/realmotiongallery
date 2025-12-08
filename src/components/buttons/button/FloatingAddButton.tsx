@@ -16,7 +16,7 @@ const FloatingAddButton = () => {
   const handleClick = () => {
     if (!user) {
       toast.error('로그인이 필요합니다.');
-      router.push('/auth/login');
+      router.push('/login');
       return;
     }
     router.push('/write');

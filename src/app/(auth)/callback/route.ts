@@ -13,7 +13,7 @@ export const GET = async (request: Request) => {
     if (error) {
       console.error('Social Login Error', error);
       return NextResponse.redirect(
-        new URL('/auth/login?error=SocialLoginFailed', requestUrl.origin),
+        new URL('/login?error=SocialLoginFailed', requestUrl.origin),
       );
     }
 

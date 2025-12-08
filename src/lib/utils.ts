@@ -15,7 +15,7 @@ export const removeAllowTransparency = (value: string) => {
 // 예제 썸네일 추출 (코드펜, 코드샌드박스만 있음)
 export const extractThumbnailUrl = (content: string) => {
   const match = content.match(/<iframe[^>]+src="([^"]+)"[^>]*>/);
-  if (!match) return '/default-thumbnail.png'; // 만들기
+  if (!match) return '/default-thumbnail.png';
 
   const src = match[1];
 

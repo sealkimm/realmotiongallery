@@ -73,7 +73,7 @@ const LoginPage = () => {
 
   return (
     //텍스트들 한국어로 할건지 영어로 할건지 통일화하기
-    <div className="fixed inset-0 z-50 flex h-screen items-center justify-center border border-blue-500 bg-background">
+    <div className="flex min-h-screen items-center justify-center bg-background">
       <div className="w-full max-w-md">
         <Card className="border-white/10 bg-gray-900/50 backdrop-blur-md">
           <CardHeader className="text-center">
@@ -152,7 +152,7 @@ const LoginPage = () => {
             <div className="mt-6 text-center text-sm text-gray-500">
               아직 계정이 없으신가요?
               <Link
-                href="/auth/signup"
+                href="/signup"
                 className="ml-2 align-text-bottom text-purple-400 transition-colors hover:text-purple-300"
               >
                 Sign Up

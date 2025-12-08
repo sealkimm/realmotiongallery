@@ -1,4 +1,14 @@
+'use client';
+
+import UseSimpleLayout from '@/hooks/useSimpleLayout';
+
 const Footer = () => {
+  const { isSimpleLayout } = UseSimpleLayout();
+
+  if (isSimpleLayout) {
+    return null;
+  }
+
   return (
     <footer className="mt-auto border-t border-white/10 bg-black py-8">
       <div className="container mx-auto px-4">
