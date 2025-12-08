@@ -186,7 +186,7 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
                   태그
                 </div>
                 <Input
-                  placeholder="태그를 엔터로 구분하여 입력하세요"
+                  placeholder="태그를 엔터로 구분하여 입력하세요(최대 5개)"
                   onKeyDown={handleKeyDown}
                 />
               </div>
