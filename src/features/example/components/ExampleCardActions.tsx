@@ -5,7 +5,7 @@ interface ExampleCardActionsProps {
   handleLike: MouseEventHandler<HTMLButtonElement>;
   handleBookmark: MouseEventHandler<HTMLButtonElement>;
   handleComment?: MouseEventHandler<HTMLButtonElement>;
-  commentCount: number;
+  commentCount?: number;
   likeCount: number;
   isLiked: boolean;
   isBookmarked: boolean;

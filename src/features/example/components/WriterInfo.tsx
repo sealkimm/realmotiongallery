@@ -1,19 +1,23 @@
 import type { User } from '@/types/user';
 import { UserIcon } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
+import { cn, formatDate } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface WriterInfoProps {
   author: Pick<User, 'nickname' | 'avatar_url'>;
+  createdAt?: string;
   variant?: 'card' | 'full';
 }
 
-const WriterInfo = ({ author, variant = 'full' }: WriterInfoProps) => {
+const WriterInfo = ({
+  variant = 'full',
+  author,
+  createdAt,
+}: WriterInfoProps) => {
   const isFull = variant === 'full';
 
   return (
-    // <div className="mb-8 flex items-center gap-3 border-b border-gray-800 pb-6">
     <div
       className={cn(
         'flex items-center gap-3 border-gray-800',
@@ -32,7 +36,6 @@ const WriterInfo = ({ author, variant = 'full' }: WriterInfoProps) => {
         </AvatarFallback>
       </Avatar>
       <div>
-        {isFull && <p className="text-sm text-gray-500">Created by</p>}
         <p
           className={cn(
             'font-medium',
@@ -41,6 +44,9 @@ const WriterInfo = ({ author, variant = 'full' }: WriterInfoProps) => {
         >
           {author.nickname}
         </p>
+        {isFull && createdAt && (
+          <p className="text-xs text-gray-500">{formatDate(createdAt)}</p>
+        )}
       </div>
     </div>
   );
