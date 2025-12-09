@@ -28,11 +28,17 @@ interface UseCommentProps {
   exampleId: string;
   userId?: string;
   setComments: Dispatch<SetStateAction<CommentWithUser[]>>;
+  setTotalCount: Dispatch<SetStateAction<number>>;
 }
 
 const MAX_COMMENT_LENGTH = 300;
 
-const useComment = ({ exampleId, userId, setComments }: UseCommentProps) => {
+const useComment = ({
+  exampleId,
+  userId,
+  setComments,
+  setTotalCount,
+}: UseCommentProps) => {
   // 생성
   const { execute: createComment, isLoading: isCreating } = useSupabaseRequest({
     requestFn: async ({ content, exampleId, userId, parentId }) => {
@@ -50,6 +56,7 @@ const useComment = ({ exampleId, userId, setComments }: UseCommentProps) => {
     },
     onSuccess: result => {
       setComments(prev => [result, ...prev]);
+      setTotalCount(prev => prev + 1);
     },
   });
 
@@ -88,6 +95,7 @@ const useComment = ({ exampleId, userId, setComments }: UseCommentProps) => {
       if (!result) return;
 
       setComments(prev => prev.filter(comment => comment.id !== result.id));
+      setTotalCount(prev => Math.max(0, prev - 1));
     },
   });
 

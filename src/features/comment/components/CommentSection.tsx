@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useAuth } from '@/providers/AuthProvider';
 import { MessageCircle } from 'lucide-react';
 
@@ -26,9 +27,11 @@ const CommentSection = ({
   exampleId,
   comments: initialComments,
   hasMore: initialHasMore,
-  totalCount,
+  totalCount: initialTotalCount,
 }: CommentSectionProps) => {
   const { user } = useAuth();
+  const [totalCount, setTotalCount] = useState(initialTotalCount);
+
   const {
     data: comments,
     setData: setComments,
@@ -56,6 +59,7 @@ const CommentSection = ({
     exampleId,
     userId: user?.id,
     setComments,
+    setTotalCount,
   });
 
   const parentComments = comments.filter(comment => !comment.parent_id);

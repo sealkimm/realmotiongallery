@@ -28,9 +28,10 @@ const useInfiniteScroll = <T>({
 
     setIsLoading(true);
 
+    // setTimeout 테스트용
     const [{ data: newData, hasMore: moreAvailable }] = await Promise.all([
       fetchFn(page),
-      new Promise(resolve => setTimeout(resolve, 500)),
+      new Promise(resolve => setTimeout(resolve, 700)),
     ]);
 
     setData(prev => [...prev, ...newData]);

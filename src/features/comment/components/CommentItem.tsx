@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import {
   ChevronDown,
+  CornerDownRight,
   Edit,
   MessageCircle,
   MoreVertical,
@@ -36,6 +37,8 @@ interface CommentItemProps {
   isDeleting: boolean;
 }
 
+const REPLY_PAGE_SIZE = 5;
+
 const CommentItem = ({
   comment,
   userId,
@@ -52,7 +55,11 @@ const CommentItem = ({
   const [isEditMode, setIsEditMode] = useState(false);
   const [isReplyMode, setIsReplyMode] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
+  const [visibleRepliesCount, setVisibleRepliesCount] =
+    useState(REPLY_PAGE_SIZE);
   const hasReplies = replies.length > 0;
+  const hasMoreReplies = replies.length > visibleRepliesCount;
+
   const isReply = !!comment.parent_id;
 
   const handleUpdate = (content: string) => {
@@ -72,8 +79,12 @@ const CommentItem = ({
     }
   };
 
+  const handleLoadMoreReplies = () => {
+    setVisibleRepliesCount(prev => prev + REPLY_PAGE_SIZE);
+  };
+
   return (
-    <div key={comment.id} className="relative flex items-start gap-3">
+    <div className="relative flex w-full items-start gap-3">
       <Avatar className="h-8 w-8">
         <AvatarImage
           src={comment.author.avatar_url}
@@ -146,7 +157,7 @@ const CommentItem = ({
                   onClick={() => {
                     setIsReplyMode(!isReplyMode);
                   }}
-                  className="hover:text-gray-white text-xs text-gray-400"
+                  className="text-xs text-gray-400 hover:text-white"
                 >
                   <MessageCircle size={14} className="mr-1" />
                   답글
@@ -158,7 +169,7 @@ const CommentItem = ({
                     onClick={() => {
                       setShowReplies(!showReplies);
                     }}
-                    className="hover:text-gray-white text-xs text-gray-400"
+                    className="text-xs text-gray-400 hover:text-white"
                   >
                     <ChevronDown size={14} /> 답글 {replies.length}개
                   </Button>
@@ -177,8 +188,8 @@ const CommentItem = ({
           />
         )}
         {showReplies && hasReplies && (
-          <div className="ml-12 mt-4 flex flex-col gap-4">
-            {replies.map(reply => (
+          <div className="ml-12 mt-4 flex flex-col items-start gap-4">
+            {replies.slice(0, visibleRepliesCount).map(reply => (
               <CommentItem
                 key={reply.id}
                 comment={reply}
@@ -189,6 +200,17 @@ const CommentItem = ({
                 isDeleting={isDeleting}
               />
             ))}
+            {hasMoreReplies && (
+              <Button
+                variant="ghost"
+                size="xs"
+                onClick={handleLoadMoreReplies}
+                className="gap-1 text-xs text-blue-400 hover:text-blue-300"
+              >
+                <CornerDownRight size={14} />
+                답글 더보기
+              </Button>
+            )}
           </div>
         )}
       </div>
