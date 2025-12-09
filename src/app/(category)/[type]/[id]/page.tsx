@@ -2,6 +2,7 @@ import { createSupabaseServerClient } from '@/lib/supabase/server';
 import ContentAnimator from '@/components/animations/ContentAnimator';
 import MarkdownViewer from '@/components/editor/MarkdownViewer';
 import { categories } from '@/features/category/data/categories';
+import { getExampleComments } from '@/features/comment/api/getExampleComments';
 import CommentSection from '@/features/comment/components/CommentSection';
 import ExampleMetaSection from '@/features/example/components/ExampleMetaSection';
 import RelatedExampleSection from '@/features/example/components/RelatedExampleSection-del';
@@ -80,18 +81,21 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
       error,
     }));
 
-  if (!category || exampleError) throw new Error('예제를 불러오지 못했습니다.');
+  if (!category) {
+    throw new Error(`카테고리를 찾을 수 없습니다: ${type}`);
+  }
+
+  if (exampleError) {
+    throw new Error('예제를 불러오지 못했습니다.');
+  }
 
   const isAuthor = user?.id === example?.author.id;
 
-  // //////////////
-  const { data: comments, error: commentsError } = await supabase
-    .from('comments')
-    .select('*, author:users(id, nickname, avatar_url)')
-    .eq('example_id', id)
-    .order('created_at');
-
-  if (commentsError) throw new Error('댓글을 불러오지 못했습니다.');
+  const { data: comments, hasMore } = await getExampleComments({
+    id,
+    page: 0,
+    pageSize: 10,
+  });
 
   return (
     <div className="pb-20 pt-24">
@@ -104,7 +108,11 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
             examples={relatedExamples}
             category={category}
           /> */}
-          <CommentSection exampleId={id} comments={comments} />
+          <CommentSection
+            exampleId={id}
+            comments={comments}
+            hasMore={hasMore}
+          />
         </ContentAnimator>
       </div>
     </div>

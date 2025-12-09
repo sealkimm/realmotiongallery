@@ -55,7 +55,7 @@ const useComment = ({
       return result;
     },
     onSuccess: result => {
-      setComments(prev => [...prev, result]);
+      setComments(prev => [result, ...prev]);
     },
   });
 

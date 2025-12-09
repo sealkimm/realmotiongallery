@@ -4,24 +4,45 @@ import { useAuth } from '@/providers/AuthProvider';
 import { MessageCircle } from 'lucide-react';
 
 import useComment from '@/hooks/useComment';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import CommentForm from '@/features/comment/components/CommentForm';
 import type { CommentWithUser } from '@/features/comment/types/comment';
 
+import { getExampleComments } from '../api/getExampleComments';
 import CommentItem from './CommentItem';
+import CommentSkeleton from './CommentSkeleton';
 
 interface CommentSectionProps {
   exampleId: string;
   comments: CommentWithUser[];
+  hasMore: boolean;
 }
+
+const PAGE_SIZE = 10;
+
 //// onchnage 한글자 적을때마다 콘솔 나옴 -> 성능에 적합한 방법 찾기
 const CommentSection = ({
   exampleId,
   comments: initialComments,
+  hasMore: initialHasMore,
 }: CommentSectionProps) => {
   const { user } = useAuth();
+  const {
+    data: comments,
+    isLoading,
+    observerRef,
+  } = useInfiniteScroll({
+    initialData: initialComments,
+    initialHasMore,
+    fetchFn: page =>
+      getExampleComments({
+        id: exampleId,
+        page,
+        pageSize: PAGE_SIZE,
+      }),
+  });
 
   const {
-    comments,
     isCreating,
     isUpdating,
     isDeleting,
@@ -35,7 +56,6 @@ const CommentSection = ({
   });
 
   const parentComments = comments.filter(comment => !comment.parent_id);
-
   const getReplies = (parentId: string) => {
     return comments.filter(comment => comment.parent_id === parentId);
   };
@@ -62,6 +82,8 @@ const CommentSection = ({
           />
         ))}
       </div>
+      {isLoading && <CommentSkeleton count={PAGE_SIZE} />}
+      <div ref={observerRef} className="h-10" />
     </div>
   );
 };

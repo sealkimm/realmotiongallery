@@ -73,7 +73,7 @@ const CommentItem = ({
   };
 
   return (
-    <div key={comment.id} className="relative flex gap-3">
+    <div key={comment.id} className="relative flex items-start gap-3">
       <Avatar className="h-8 w-8">
         <AvatarImage
           src={comment.author.avatar_url}
