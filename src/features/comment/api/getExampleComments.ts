@@ -30,5 +30,6 @@ export const getExampleComments = async ({
   return {
     data,
     hasMore: (count || 0) > to + 1,
+    totalCount: count || 0,
   };
 };

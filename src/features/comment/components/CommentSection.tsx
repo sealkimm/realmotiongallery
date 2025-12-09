@@ -16,6 +16,7 @@ interface CommentSectionProps {
   exampleId: string;
   comments: CommentWithUser[];
   hasMore: boolean;
+  totalCount: number;
 }
 
 const PAGE_SIZE = 10;
@@ -25,10 +26,12 @@ const CommentSection = ({
   exampleId,
   comments: initialComments,
   hasMore: initialHasMore,
+  totalCount,
 }: CommentSectionProps) => {
   const { user } = useAuth();
   const {
     data: comments,
+    setData: setComments,
     isLoading,
     observerRef,
   } = useInfiniteScroll({
@@ -51,8 +54,8 @@ const CommentSection = ({
     handleDeleteComment,
   } = useComment({
     exampleId,
-    initialComments,
     userId: user?.id,
+    setComments,
   });
 
   const parentComments = comments.filter(comment => !comment.parent_id);
@@ -63,7 +66,7 @@ const CommentSection = ({
   return (
     <div id="comment" className="border-t border-gray-800 pt-10">
       <h3 className="mb-6 flex items-center gap-3 text-2xl font-bold">
-        <MessageCircle /> 댓글 {comments.length}개
+        <MessageCircle /> 댓글 {totalCount}개
       </h3>
       <CommentForm onSubmit={handleCreateComment} isLoading={isCreating} />
       <div className="flex flex-col gap-4">

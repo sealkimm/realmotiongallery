@@ -91,7 +91,11 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
 
   const isAuthor = user?.id === example?.author.id;
 
-  const { data: comments, hasMore } = await getExampleComments({
+  const {
+    data: comments,
+    hasMore,
+    totalCount,
+  } = await getExampleComments({
     id,
     page: 0,
     pageSize: 10,
@@ -112,6 +116,7 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
             exampleId={id}
             comments={comments}
             hasMore={hasMore}
+            totalCount={totalCount}
           />
         </ContentAnimator>
       </div>

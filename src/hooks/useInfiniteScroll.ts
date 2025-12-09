@@ -67,6 +67,7 @@ const useInfiniteScroll = <T>({
     hasMore,
     isLoading,
     observerRef,
+    setData,
   };
 };
 

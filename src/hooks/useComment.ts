@@ -16,7 +16,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 import { toast } from 'sonner';
 
 import { supabase } from '@/lib/supabase/client';
@@ -26,19 +26,13 @@ import useSupabaseRequest from './useSupabaseRequest';
 
 interface UseCommentProps {
   exampleId: string;
-  initialComments: CommentWithUser[];
   userId?: string;
+  setComments: Dispatch<SetStateAction<CommentWithUser[]>>;
 }
 
 const MAX_COMMENT_LENGTH = 300;
 
-const useComment = ({
-  exampleId,
-  initialComments,
-  userId,
-}: UseCommentProps) => {
-  const [comments, setComments] = useState(initialComments);
-
+const useComment = ({ exampleId, userId, setComments }: UseCommentProps) => {
   // 생성
   const { execute: createComment, isLoading: isCreating } = useSupabaseRequest({
     requestFn: async ({ content, exampleId, userId, parentId }) => {
@@ -132,7 +126,6 @@ const useComment = ({
   };
 
   return {
-    comments,
     isCreating,
     isUpdating,
     isDeleting,
