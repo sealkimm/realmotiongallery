@@ -11,7 +11,7 @@ const SimpleHeader = () => {
 
   return (
     <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/0 backdrop-blur-md">
-      <div className="container relative mx-auto flex items-center justify-between px-4 py-4">
+      <div className="container relative flex items-center justify-between py-4">
         <Link href="/" className="relative text-2xl font-bold">
           <span className="gradient-text">Motion Gallery</span>
         </Link>

@@ -103,7 +103,7 @@ const ExamplePage = async ({ params }: ExamplePageProps) => {
 
   return (
     <div className="pb-20 pt-24">
-      <div className="container mx-auto px-4">
+      <div className="container">
         <ContentAnimator>
           <ExampleMetaSection example={example} isAuthor={isAuthor} />
           <MarkdownViewer content={example.content} />

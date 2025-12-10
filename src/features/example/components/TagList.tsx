@@ -5,7 +5,7 @@ interface TagListProps {
 }
 const TagList = ({ tags }: TagListProps) => {
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 overflow-x-auto">
       {tags &&
         tags.map((tag, index) => (
           <Tag variant="outline" key={index} label={tag} />

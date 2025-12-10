@@ -25,7 +25,7 @@ const MyPage = () => {
   };
 
   return (
-    <div className="container mx-auto h-screen">
+    <div className="container h-screen">
       <div className="flex h-full flex-col items-center justify-center gap-4">
         <div>내가 좋아요한 예제</div>
         <div>내가 작성한 예제</div>

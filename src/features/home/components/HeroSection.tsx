@@ -12,7 +12,7 @@ const HeroSection = () => {
             'linear-gradient(to bottom, rgba(102, 0, 204, 0.2) 0%, rgba(102, 0, 204, 0.1) 30%, transparent 80%)',
         }}
       ></div>
-      <div className="container relative mx-auto max-w-4xl text-center">
+      <div className="container relative max-w-4xl text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

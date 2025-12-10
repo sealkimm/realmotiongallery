@@ -20,13 +20,13 @@ const FormBtnGroup = ({ isEditMode, isLoading }: FormBtnGroupProps) => {
       <Button
         type="button"
         variant="outline"
-        className="text-md"
+        className="text-base"
         onClick={onClickCancel}
         disabled={isLoading}
       >
         취소
       </Button>
-      <Button type="submit" className="text-md" disabled={isLoading}>
+      <Button type="submit" className="text-base" disabled={isLoading}>
         <Save /> {isEditMode ? '수정하기' : '등록하기'}
       </Button>
     </div>

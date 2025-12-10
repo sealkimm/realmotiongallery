@@ -74,7 +74,7 @@ const LoginPage = () => {
   return (
     //텍스트들 한국어로 할건지 영어로 할건지 통일화하기
     <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="w-full max-w-md">
+      <div className="container w-full max-w-md px-4">
         <Card className="border-white/10 bg-gray-900/50 backdrop-blur-md">
           <CardHeader className="text-center">
             <CardTitle className="gradient-text mb-2 text-3xl font-bold">

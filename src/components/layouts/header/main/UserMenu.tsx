@@ -29,7 +29,7 @@ const UserMenu = ({ user, onSignOut }: UserMenuProps) => {
             </AvatarFallback>
           </Avatar>
           <span className="hidden text-sm md:block">{user.nickname}</span>
-          <ChevronDown size={16} />
+          <ChevronDown size={16} className="hidden md:block" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48 border-gray-800 bg-gray-900">

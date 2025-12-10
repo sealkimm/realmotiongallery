@@ -31,7 +31,7 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
 
   return (
     <div className="pb-20 pt-24">
-      <div className="container mx-auto px-4">
+      <div className="container">
         <div className="mx-auto max-w-6xl">
           <PageHeader {...pageHeaderProps} />
           <SearchBar category={category} />

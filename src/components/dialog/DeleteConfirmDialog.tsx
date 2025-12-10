@@ -24,7 +24,7 @@ const DeleteConfirmDialog = ({
 }: DeleteConfirmDialogProps) => {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogContent className="border-gray-800 bg-gray-900">
+      <AlertDialogContent className="w-[calc(100%-2rem)] border-gray-800 bg-gray-900">
         <AlertDialogHeader>
           <AlertDialogTitle>
             {type === 'example' ? '예제' : '댓글'} 삭제

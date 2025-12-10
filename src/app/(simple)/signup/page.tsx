@@ -24,7 +24,7 @@ const SignupPage = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="w-full max-w-md">
+      <div className="container w-full max-w-md">
         <Card className="border-white/10 bg-gray-900/50 backdrop-blur-md">
           <CardHeader className="text-center">
             <CardTitle className="gradient-text mb-2 text-3xl font-bold">

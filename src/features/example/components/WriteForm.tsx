@@ -2,13 +2,13 @@
 
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import dynamic from 'next/dynamic';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Tag as TagIcon, X } from 'lucide-react';
 import { motion } from 'motion/react';
 
 import useExample from '@/hooks/useExample';
 import useTags from '@/hooks/useTags';
-import MarkdownEditor from '@/components/editor/MarkdownEditor';
 import FormBtnGroup from '@/components/form/FormBtnGroup';
 import FormSection from '@/components/form/FormSection';
 import {
@@ -34,6 +34,10 @@ import type { Example } from '@/features/example/types/example';
 import Tag from '../../../components/tag/Tag';
 import { formSchema, type FormValues } from '../formSchema';
 
+const MarkdownEditor = dynamic(
+  () => import('@/components/editor/MarkdownEditor'),
+  { ssr: false },
+);
 interface WriteFormProps {
   exampleData?: Example;
 }
@@ -170,7 +174,7 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
                     <FormLabel className="text-foreground">내용</FormLabel>
                     <FormControl>
                       <MarkdownEditor
-                        value={field.value}
+                        value={field.value || ''}
                         onChange={field.onChange}
                       />
                     </FormControl>
@@ -190,7 +194,7 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
                   onKeyDown={handleKeyDown}
                 />
               </div>
-              <div className="mt-3 flex gap-2">
+              <div className="mt-3 flex flex-wrap gap-2">
                 {tags.map((tag, index) => (
                   <Tag
                     key={index}

@@ -90,7 +90,7 @@ const CommentSection = ({
         ))}
       </div>
       {isLoading && <CommentSkeleton count={PAGE_SIZE} />}
-      <div ref={observerRef} className="h-10" />
+      <div ref={observerRef} className="-mt-10 h-10" />
     </div>
   );
 };

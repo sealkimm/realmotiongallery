@@ -27,7 +27,7 @@ const HomePage = async () => {
     <>
       <HeroSection />
       <div className="relative pb-40">
-        <div className="container mx-auto flex flex-col gap-24 px-4">
+        <div className="container flex flex-col gap-24">
           {examplesByCategory.map(category => (
             <CategorySection
               key={category.id}

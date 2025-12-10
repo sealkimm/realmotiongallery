@@ -18,7 +18,10 @@ export const formSchema = z.object({
   description: z
     .string()
     .min(1, { message: FORM_MESSAGES.REQUIRED_DESCRIPTION }),
-  content: z.string().min(1, { message: FORM_MESSAGES.REQUIRED_CONTENT }),
+  content: z
+    .string()
+    .trim()
+    .min(1, { message: FORM_MESSAGES.REQUIRED_CONTENT }),
   thumbnail: z.string().optional(),
 });
 

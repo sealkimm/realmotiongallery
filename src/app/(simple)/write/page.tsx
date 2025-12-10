@@ -27,7 +27,7 @@ const WritePage = async ({ searchParams }: WritePageProps) => {
 
   return (
     <div className="pb-20 pt-24">
-      <div className="container mx-auto px-4">
+      <div className="container">
         <div className="mx-auto max-w-5xl">
           <PageHeader
             title={exampleData ? '예제 수정하기' : '새 예제 등록하기'}

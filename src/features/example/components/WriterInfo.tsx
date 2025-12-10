@@ -21,7 +21,8 @@ const WriterInfo = ({
     <div
       className={cn(
         'flex items-center gap-3 border-gray-800',
-        isFull ? 'mb-6 border-b pb-6' : 'mt-3 border-t pt-4',
+        // isFull ? 'mb-6 border-b pb-6' : 'mt-3 border-t pt-4',
+        isFull ? '' : 'mt-3 border-t pt-4', // 확인하기!!!!!!!!!!!!!!!
       )}
     >
       <Avatar
