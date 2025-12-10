@@ -8,8 +8,6 @@ import { AuthProvider } from '@/providers/AuthProvider';
 import FloatingAddButton from '@/components/buttons/button/FloatingAddButton';
 import { Toaster } from '@/components/ui/sonner';
 
-import Footer from '../components/layouts/Footer';
-import Header from '../components/layouts/Header';
 import Theme from '../providers/theme-provider';
 
 const inter = Inter({
@@ -30,17 +28,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        {/* 위치 바꾸기 */}
         <AuthProvider>
           <Theme>
             <Toaster position="top-center" />
-            {/* 이거 뭐 homewrapper 컨테이너로 따로 빼기 */}
             <div className="flex min-h-screen flex-col bg-background text-foreground">
-              <Header />
-              <main>{children}</main>
-              <FloatingAddButton />
-              <Footer />
+              {children}
             </div>
+            <FloatingAddButton />
           </Theme>
         </AuthProvider>
       </body>

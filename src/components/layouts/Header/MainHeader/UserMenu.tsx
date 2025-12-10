@@ -4,13 +4,13 @@ import { ChevronDown, LogOut, User as UserIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '../../../ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '../../ui/dropdown-menu';
+} from '../../../ui/dropdown-menu';
 
 interface UserMenuProps {
   user: User;
