@@ -10,14 +10,15 @@ interface AuthButtonsProps {
 const AuthButtons = ({ isAuthenticated }: AuthButtonsProps) => {
   if (isAuthenticated) {
     return (
-      <>
-        <Button asChild className="gradient-background ml-4">
-          <Link href="/write" className="flex items-center gap-4">
-            <Plus size={16} />
-            <span>글작성</span>
-          </Link>
-        </Button>
-      </>
+      <Button
+        asChild
+        className="gradient-background ml-4 hidden lg:inline-flex"
+      >
+        <Link href="/write" className="flex items-center gap-4">
+          <Plus size={16} />
+          <span>글작성</span>
+        </Link>
+      </Button>
     );
   }
 
@@ -33,7 +34,10 @@ const AuthButtons = ({ isAuthenticated }: AuthButtonsProps) => {
           <span>로그인</span>
         </Link>
       </Button>
-      <Button asChild className="gradient-background ml-4">
+      <Button
+        asChild
+        className="gradient-background ml-4 hidden lg:inline-flex"
+      >
         <Link href="/signup" className="flex items-center gap-4">
           <UserPlus2 />
           <span>회원가입</span>

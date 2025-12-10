@@ -10,7 +10,7 @@ interface CategoryNavProps {
 
 const CategoryNav = ({ activeCategory }: CategoryNavProps) => {
   return (
-    <nav className="mr-8 flex gap-8">
+    <nav className="flex hidden md:mr-1 md:flex md:gap-1 lg:mr-8 lg:gap-8">
       <Button
         asChild
         variant="ghost"
