@@ -3,7 +3,7 @@ import { EXAMPLE_SELECT } from '@/features/example/constants/exampleSelect';
 import {
   groupExamplesByCategory,
   transformExampleData,
-} from '@/features/example/utils/groupExamplesByCategory';
+} from '@/features/example/utils';
 import CategorySection from '@/features/home/components/CategorySection';
 import HeroSection from '@/features/home/components/HeroSection';
 

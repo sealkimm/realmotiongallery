@@ -2,9 +2,9 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { User } from '@/types/user';
 
 import { supabase } from '@/lib/supabase/client';
+import type { User } from '@/features/auth/types/user';
 
 type AuthContextType = {
   user: User | null;

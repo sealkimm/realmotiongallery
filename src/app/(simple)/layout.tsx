@@ -1,6 +1,6 @@
 import '@/styles/globals.css';
 
-import SimpleHeader from '@/components/layouts/Header/SimpleHeader';
+import SimpleHeader from '@/components/layouts/header/simple';
 
 const SimpleLayout = ({ children }: { children: React.ReactNode }) => {
   return (

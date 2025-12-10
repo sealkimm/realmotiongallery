@@ -2,7 +2,7 @@
 
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { EXAMPLE_SELECT } from '@/features/example/constants/exampleSelect';
-import { transformExampleData } from '@/features/example/utils/groupExamplesByCategory';
+import { transformExampleData } from '@/features/example/utils';
 
 interface GetExamplesByCategoryProps {
   type: string;

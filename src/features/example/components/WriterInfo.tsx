@@ -1,8 +1,8 @@
-import type { User } from '@/types/user';
 import { UserIcon } from 'lucide-react';
 
 import { cn, formatDate } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import type { User } from '@/features/auth/types/user';
 
 interface WriterInfoProps {
   author: Pick<User, 'nickname' | 'avatar_url'>;

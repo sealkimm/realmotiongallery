@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import type { User } from '@/types/user';
 import { ChevronDown, LogOut, User as UserIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import type { User } from '@/features/auth/types/user';
 
 import { Avatar, AvatarFallback, AvatarImage } from '../../../ui/avatar';
 import {

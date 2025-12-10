@@ -1,7 +1,7 @@
 import '@/styles/globals.css';
 
 import Footer from '@/components/layouts/Footer';
-import MainHeader from '@/components/layouts/Header/MainHeader';
+import MainHeader from '@/components/layouts/header/main';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (

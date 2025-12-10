@@ -1,4 +1,4 @@
-import type { User } from '@/types/user';
+import type { User } from '@/features/auth/types/user';
 
 export interface Example {
   id: string;

@@ -5,7 +5,7 @@ import '@/styles/globals.css';
 
 import { AuthProvider } from '@/providers/AuthProvider';
 
-import FloatingAddButton from '@/components/buttons/button/FloatingAddButton';
+import FloatingAddButton from '@/components/button/FloatingAddButton';
 import { Toaster } from '@/components/ui/sonner';
 
 import Theme from '../providers/theme-provider';
