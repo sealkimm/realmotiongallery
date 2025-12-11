@@ -47,12 +47,12 @@ const MainHeader = () => {
   );
 
   // ✳️✳️✳️✳️ 로그인할때 에러때문에 넣은 로딩인데 이거때문에 모션 안되서 잠시 지움 -> 다시 확인 꼭 하기!!
-  if (isLoading)
-    return (
-      <div className="flex h-[200] w-full items-center justify-center bg-green-500">
-        로딩중...
-      </div>
-    );
+  // if (isLoading)
+  //   return (
+  //     <div className="flex h-full w-full items-center justify-center bg-green-500">
+  //       로딩중...
+  //     </div>
+  //   );
 
   return (
     <>

@@ -23,7 +23,7 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
+    <div className="flex min-h-screen items-center justify-center bg-background pb-12 pt-24">
       <div className="container w-full max-w-md">
         <Card className="border-white/10 bg-gray-900/50 backdrop-blur-md">
           <CardHeader className="text-center">

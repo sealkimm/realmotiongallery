@@ -25,7 +25,7 @@ const Tag = ({
     <Badge
       variant={variant}
       className={cn(
-        'group relative cursor-pointer bg-purple-500/50 text-sm font-light text-white/80',
+        'group relative cursor-pointer whitespace-nowrap bg-purple-500/50 text-sm font-light text-white/80',
         variant === 'outline' &&
           'cursor-default border-gray-700 bg-gray-900 text-white/80',
         className,

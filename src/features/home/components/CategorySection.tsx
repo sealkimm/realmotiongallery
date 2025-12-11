@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 
 import { gsap, useGSAP } from '@/lib/gsap';
+import useIsMobile from '@/hooks/useIsMobile';
 import CardListAnimator from '@/components/animations/CardListAnimator';
 import { Button } from '@/components/ui/button';
 import type { Category } from '@/features/category/types/category';
@@ -18,15 +19,17 @@ interface CategorySectionProps {
 
 const CategorySection = ({ category, examples }: CategorySectionProps) => {
   const categorySectionRef = useRef(null);
+  const isMobile = useIsMobile();
 
   useGSAP(
     () => {
       if (!categorySectionRef.current) return;
+      const startValue = isMobile ? 'top 90%' : 'top 80%';
 
       gsap.from(categorySectionRef.current, {
         scrollTrigger: {
           trigger: categorySectionRef.current,
-          start: 'top 80%',
+          start: startValue,
         },
         y: 100,
         opacity: 0,
@@ -34,7 +37,11 @@ const CategorySection = ({ category, examples }: CategorySectionProps) => {
         ease: 'power3.out',
       });
     },
-    { scope: categorySectionRef },
+    {
+      scope: categorySectionRef,
+      dependencies: [isMobile],
+      revertOnUpdate: true,
+    },
   );
 
   return (
@@ -50,10 +57,14 @@ const CategorySection = ({ category, examples }: CategorySectionProps) => {
             Smooth animations powered by GreenSock Animation Platform
           </p>
         </div>
-        <Button variant="link" asChild className={`${category.textColor}`}>
+        <Button
+          variant="link"
+          asChild
+          className={`hidden md:flex ${category.textColor}`}
+        >
           <Link href={`/${category.type}`}>
             View All
-            <ChevronRight />
+            <ChevronRight size={16} />
           </Link>
         </Button>
       </div>
@@ -64,6 +75,18 @@ const CategorySection = ({ category, examples }: CategorySectionProps) => {
           ))}
         </div>
       </CardListAnimator>
+      <div className={`mt-8 flex justify-center md:hidden`}>
+        <Button
+          variant="link"
+          asChild
+          className={`${category.textColor} border text-center ${category.borderColor} h-auto rounded-full px-6 py-3`}
+        >
+          <Link href={`/${category.type}`}>
+            View All
+            <ChevronRight size={16} />
+          </Link>
+        </Button>
+      </div>
     </div>
   );
 };

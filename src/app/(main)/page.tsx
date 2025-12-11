@@ -26,7 +26,7 @@ const HomePage = async () => {
   return (
     <>
       <HeroSection />
-      <div className="relative pb-40">
+      <div className="relative overflow-hidden pb-40">
         <div className="container flex flex-col gap-24">
           {examplesByCategory.map(category => (
             <CategorySection

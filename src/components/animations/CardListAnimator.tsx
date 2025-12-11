@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 
 import { gsap, useGSAP } from '@/lib/gsap';
+import useIsMobile from '@/hooks/useIsMobile';
 
 interface CardListAnimatorProps {
   direction: 'up' | 'down' | 'left' | 'right';
@@ -17,27 +18,32 @@ const FROM_MAP = {
 };
 
 const CardListAnimator = ({ direction, children }: CardListAnimatorProps) => {
+  const isMobile = useIsMobile();
   const wrapperRef = useRef(null);
 
-  useGSAP(() => {
-    if (!wrapperRef.current) return;
+  useGSAP(
+    () => {
+      if (!wrapperRef.current) return;
 
-    const cards = gsap.utils.toArray('.example-card', wrapperRef.current);
-    const from = FROM_MAP[direction];
+      const cards = gsap.utils.toArray('.example-card', wrapperRef.current);
+      const from = FROM_MAP[direction];
+      const startValue = isMobile ? 'top 90%' : 'top 80%';
 
-    gsap.fromTo(cards, from, {
-      x: 0,
-      y: 0,
-      opacity: 1,
-      stagger: 0.1,
-      duration: 0.8,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: wrapperRef.current,
-        start: 'top 70%',
-      },
-    });
-  }, {});
+      gsap.fromTo(cards, from, {
+        x: 0,
+        y: 0,
+        opacity: 1,
+        stagger: 0.1,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: wrapperRef.current,
+          start: startValue,
+        },
+      });
+    },
+    { dependencies: [isMobile], revertOnUpdate: true },
+  );
   return <div ref={wrapperRef}>{children}</div>;
 };
 

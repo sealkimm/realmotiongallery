@@ -72,9 +72,9 @@ const LoginPage = () => {
   };
 
   return (
-    //텍스트들 한국어로 할건지 영어로 할건지 통일화하기
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="container w-full max-w-md px-4">
+    //텍스트들 한국어로 할건지 영어로 할건지 통일화하기,  signup이랑 껍데기 같음
+    <div className="flex min-h-screen items-center justify-center bg-background pb-12 pt-24">
+      <div className="container w-full max-w-md">
         <Card className="border-white/10 bg-gray-900/50 backdrop-blur-md">
           <CardHeader className="text-center">
             <CardTitle className="gradient-text mb-2 text-3xl font-bold">
