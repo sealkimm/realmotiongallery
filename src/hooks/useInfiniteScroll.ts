@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 interface UseInfiniteScrollProps<T> {
   initialData: T[];
   initialHasMore: boolean;
+  searchQuery: string;
   fetchFn: (page: number) => Promise<{
     data: T[];
     hasMore: boolean;
@@ -14,6 +15,7 @@ interface UseInfiniteScrollProps<T> {
 const useInfiniteScroll = <T>({
   initialData,
   initialHasMore,
+  searchQuery,
   fetchFn,
 }: UseInfiniteScrollProps<T>) => {
   const [data, setData] = useState(initialData);
@@ -22,6 +24,21 @@ const useInfiniteScroll = <T>({
   const [isLoading, setIsLoading] = useState(false);
 
   const observerRef = useRef(null);
+
+  useEffect(() => {
+    const reset = async () => {
+      setIsLoading(true);
+
+      const { data: queryData, hasMore: queryHasMore } = await fetchFn(0);
+
+      setData(queryData);
+      setHasMore(queryHasMore);
+      setPage(1);
+      setIsLoading(false);
+    };
+
+    reset();
+  }, [searchQuery]);
 
   const fetchMore = useCallback(async () => {
     if (!hasMore || isLoading) return;

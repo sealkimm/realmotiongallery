@@ -1,56 +1,27 @@
 'use client';
 
-import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import CardListAnimator from '@/components/animations/CardListAnimator';
 import type { Category } from '@/features/category/types/category';
 
-import { getExamplesByCategory } from '../api/getCategoryExamples';
 import type { ExampleDetails } from '../types/example';
 import ExampleCard from './ExampleCard';
 import ExampleSkeleton from './ExampleSkeleton';
 
 interface ExampleSectionProps {
-  initialExamples: ExampleDetails[];
-  initialHasMore: boolean;
   category: Category;
+  examples: ExampleDetails[];
+  isLoading: boolean;
+  observerRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const PAGE_SIZE = 12;
 
 const ExampleSection = ({
-  initialExamples,
-  initialHasMore,
   category,
+  examples,
+  isLoading,
+  observerRef,
 }: ExampleSectionProps) => {
-  const {
-    data: examples,
-    isLoading,
-    observerRef,
-  } = useInfiniteScroll({
-    initialData: initialExamples,
-    initialHasMore,
-    fetchFn: page =>
-      getExamplesByCategory({
-        type: category.type,
-        page,
-        pageSize: PAGE_SIZE,
-      }),
-  });
-
-  // 예제가 없는 경우!!!!!!!!!!!!!!!
-  // if (examples.length === 0) {
-  //   return (
-  //     <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50">
-  //       <p className="text-lg font-medium text-gray-600">
-  //         아직 예제가 없습니다
-  //       </p>
-  //       <p className="mt-2 text-sm text-gray-500">
-  //         첫 번째 예제를 만들어보세요!
-  //       </p>
-  //     </div>
-  //   );
-  // }
-
   return (
     <>
       <CardListAnimator direction="up">

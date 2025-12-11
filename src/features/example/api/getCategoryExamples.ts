@@ -8,12 +8,14 @@ interface GetExamplesByCategoryProps {
   type: string;
   page: number;
   pageSize: number;
+  searchQuery?: string;
 }
 
 export const getExamplesByCategory = async ({
   type,
   page,
   pageSize,
+  searchQuery,
 }: GetExamplesByCategoryProps) => {
   const supabase = await createSupabaseServerClient();
   const {
@@ -23,10 +25,19 @@ export const getExamplesByCategory = async ({
   const from = page * pageSize;
   const to = from + pageSize - 1;
 
-  const { data, error, count } = await supabase
+  let query = supabase
     .from('examples')
     .select(EXAMPLE_SELECT, { count: 'exact' })
-    .eq('type', type)
+    .eq('type', type);
+
+  // 검색어 있는 경우 검색 조건 추가
+  if (searchQuery && searchQuery.trim()) {
+    query = query.or(
+      `title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`,
+    );
+  }
+
+  const { data, error, count } = await query
     .order('created_at', { ascending: false })
     .range(from, to);
 

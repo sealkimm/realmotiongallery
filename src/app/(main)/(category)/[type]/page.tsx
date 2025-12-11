@@ -1,8 +1,7 @@
 import PageHeader from '@/components/layouts/PageHeader';
-import SearchBar from '@/features/category/components/SearchBar';
+import CategoryExampleContainer from '@/features/category/components/CategoryExampleContainer';
 import { categories } from '@/features/category/data/categories';
 import { getExamplesByCategory } from '@/features/example/api/getCategoryExamples';
-import ExampleSection from '@/features/example/components/ExampleSection';
 
 interface CategoryPageProps {
   params: { type: string };
@@ -26,7 +25,6 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
     description: category.description,
     badgeTitle: category.title,
     badgeColor: category.color,
-    className: 'mb-8',
   };
 
   return (
@@ -34,11 +32,10 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
       <div className="container">
         <div className="mx-auto max-w-6xl">
           <PageHeader {...pageHeaderProps} />
-          <SearchBar category={category} />
-          <ExampleSection
-            initialExamples={examples}
-            initialHasMore={hasMore}
+          <CategoryExampleContainer
             category={category}
+            examples={examples}
+            hasMore={hasMore}
           />
         </div>
       </div>
