@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/providers/AuthProvider';
 
 import { gsap, useGSAP } from '@/lib/gsap';
+import VisitorStats from '@/components/common/VisitorStats';
 
 import AuthButtons from './AuthButtons';
 import CategoryNav from './CategoryNav';
@@ -61,9 +62,12 @@ const MainHeader = () => {
         className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/0 backdrop-blur-md"
       >
         <div className="container relative flex items-center justify-between py-4">
-          <Link href="/" className="relative text-2xl font-bold">
-            <span className="gradient-text">Motion Gallery</span>
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link href="/" className="relative text-2xl font-bold">
+              <span className="gradient-text">Motion Gallery</span>
+            </Link>
+            <VisitorStats className="hidden xl:flex" />
+          </div>
           <div className="relative flex items-center">
             <CategoryNav activeCategory={activeCategory} />
             {user && <UserMenu user={user} onSignOut={signOut} />}

@@ -148,7 +148,9 @@ const CommentItem = ({
           />
         ) : (
           <>
-            <p className="mb-2 text-sm text-gray-300">{comment.content}</p>
+            <p className="mb-2 break-words break-all pr-8 text-sm text-gray-300">
+              {comment.content}
+            </p>
             {!isReply && (
               <div className="flex items-center gap-3">
                 <Button
