@@ -33,7 +33,7 @@ const useTags = (initialTags: string[] = []) => {
     }
   };
 
-  return { tags, removeTag, handleKeyDown };
+  return { tags, removeTag, handleKeyDown, setTags };
 };
 
 export default useTags;

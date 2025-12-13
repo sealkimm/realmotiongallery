@@ -4,13 +4,15 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import dynamic from 'next/dynamic';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Tag as TagIcon, X } from 'lucide-react';
+import { Loader2, Sparkles, Tag as TagIcon, X } from 'lucide-react';
 import { motion } from 'motion/react';
 
+import useAITag from '@/hooks/useAITag';
 import useExample from '@/hooks/useExample';
 import useTags from '@/hooks/useTags';
 import FormBtnGroup from '@/components/form/FormBtnGroup';
 import FormSection from '@/components/form/FormSection';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -52,7 +54,10 @@ const DEFAULT_FORM_VALUES = {
 };
 // form 로그인페이지하고 비교하기
 const WriteForm = ({ exampleData }: WriteFormProps) => {
-  const { tags, removeTag, handleKeyDown } = useTags(exampleData?.tags ?? []);
+  const { tags, removeTag, handleKeyDown, setTags } = useTags(
+    exampleData?.tags ?? [],
+  );
+  const { generateTags, isGenerating } = useAITag();
   const { createExample, updateExample, isLoading } = useExample();
   const isEditMode = Boolean(exampleData);
 
@@ -79,6 +84,12 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
       form.reset(DEFAULT_FORM_VALUES);
     }
   }, [exampleData, form]);
+
+  const handleAITag = async () => {
+    const values = form.getValues();
+    const tags = await generateTags(values);
+    setTags(tags);
+  };
 
   return (
     <motion.div
@@ -185,9 +196,29 @@ const WriteForm = ({ exampleData }: WriteFormProps) => {
             </FormSection>
             <FormSection>
               <div>
-                <div className="mb-2 flex items-center gap-2 text-lg">
-                  <TagIcon size={18} className="text-primary" />
-                  태그
+                <div className="mb-2 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 text-lg">
+                    <TagIcon size={18} className="text-primary" />
+                    태그
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleAITag}
+                    disabled={isGenerating}
+                    className="border-purple-500/50 bg-gradient-to-r from-purple-600/20 to-pink-600/20 hover:from-purple-600/30 hover:to-pink-600/30"
+                  >
+                    <Sparkles size={20} />
+                    {isGenerating ? (
+                      <>
+                        생성중...
+                        <Loader2 size={20} className="ml-2 animate-spin" />
+                      </>
+                    ) : (
+                      'AI 추천'
+                    )}
+                  </Button>
                 </div>
                 <Input
                   placeholder="태그를 엔터로 구분하여 입력하세요(최대 5개)"
